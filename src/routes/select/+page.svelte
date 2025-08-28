@@ -8,7 +8,6 @@
 	import GraduationCapIcon from "@lucide/svelte/icons/graduation-cap";
 	import SquareKanbanIcon from "@lucide/svelte/icons/square-kanban";
 	import { Separator } from '$lib/components/ui/separator';
-	import { ROLE_ADMIN, ROLE_INSTRUCTOR } from '$lib/authShared';
 
 	const { data }: PageProps = $props();
 </script>
@@ -41,14 +40,16 @@
 					My past exams
 				</Button>
 			</div>
-			{#if data.user.role >= ROLE_INSTRUCTOR}
+			{#if data.instructorIn || data.adminIn}
 				<div class="flex flex-row justify-center gap-2">
-					<Button variant="secondary" href="/recommenders">
-						<GraduationCapIcon />
-						Instructors
-					</Button>
-					{#if data.user.role >= ROLE_ADMIN}
-						<Button variant="secondary" href="/admin">
+					{#if data.instructorIn}
+						<Button variant="secondary" href="/recommend/{data.instructorIn}">
+							<GraduationCapIcon />
+							Instructors
+						</Button>
+					{/if}
+					{#if data.adminIn}
+						<Button variant="secondary" href="/admin/{data.adminIn}/exams">
 							<SquareKanbanIcon />
 							Administrators
 						</Button>

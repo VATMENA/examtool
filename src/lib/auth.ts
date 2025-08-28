@@ -1,5 +1,5 @@
 import { db } from '$lib/server/db';
-import { session as tSession, user as tUser } from '$lib/server/db/schema';
+import { facilityRole, session as tSession, user as tUser } from '$lib/server/db/schema';
 import { base64ToBytes, bytesToBase64 } from '$lib/utils';
 import { eq } from 'drizzle-orm';
 import type { Cookies } from '@sveltejs/kit';
@@ -162,28 +162,47 @@ export async function requireAuth(cookies: Cookies): Promise<AuthenticatedSessio
 		redirect(301, "/");
 	}
 
-	const user = await db.select()
-		.from(tUser)
-		.where(eq(tUser.id, session.userId));
+	const userAndRoles = await db.query.user.findFirst({
+		where: eq(tUser.id, session.userId),
+		with: {
+			facilityRole: true
+		}
+	});
 
-	if (user.length !== 1) {
+	if (!userAndRoles) {
 		await deleteSession(session.id);
 		redirect(301, "/");
 	}
 
 	return {
-		user: user[0],
+		user: userAndRoles,
 		...session
 	};
 }
-export async function requireRole(session: Promise<AuthenticatedSession>, role: number): Promise<AuthenticatedSession> {
+export async function requireRole(session: Promise<AuthenticatedSession>, requiredRole: number, requireAnyRole: boolean = true): Promise<RoleAuthenticatedSession> {
 	const aSession = await session;
-	if (aSession.user.role < role) {
+
+	const metRoleIn = [];
+
+	for (const role of aSession.user.facilityRole) {
+		if (role.role >= requiredRole) {
+			metRoleIn.push(role.facilityId);
+		}
+	}
+
+	if (metRoleIn.length == 0 && requireAnyRole) {
 		redirect(301, "/select");
 	}
-	return aSession;
+
+	return {
+		metRoleIn,
+		...aSession
+	};
 }
 
 export interface AuthenticatedSession extends Session {
-	user: typeof tUser.$inferSelect;
+	user: typeof tUser.$inferSelect & { facilityRole: typeof facilityRole.$inferSelect[] };
+}
+export interface RoleAuthenticatedSession extends AuthenticatedSession {
+	metRoleIn: string[]
 }

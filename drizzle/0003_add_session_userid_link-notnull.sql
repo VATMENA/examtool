@@ -1,1 +1,0 @@
-ALTER TABLE "session" ALTER COLUMN "userId" SET NOT NULL;

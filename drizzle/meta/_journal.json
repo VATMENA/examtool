@@ -5,36 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1756340719860,
-      "tag": "0000_add_user",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1756341037826,
-      "tag": "0001_add_session",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1756343432839,
-      "tag": "0002_add_session_userid_link",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1756343801008,
-      "tag": "0003_add_session_userid_link-notnull",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "7",
-      "when": 1756346072592,
-      "tag": "0004_add_user_role",
+      "when": 1756390110897,
+      "tag": "0000_initial",
       "breakpoints": true
     }
   ]
