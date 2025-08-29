@@ -1,4 +1,4 @@
-import { pgTable, integer, varchar, unique, serial } from 'drizzle-orm/pg-core';
+import { pgTable, integer, varchar, unique, serial, boolean } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 
 export const user = pgTable('user', {
@@ -33,3 +33,14 @@ export const facilityRoleRelations = relations(facilityRole, ({ one }) => ({
 		references: [user.id]
 	})
 }));
+
+export const exam = pgTable('exam', {
+	id: serial('id').primaryKey(),
+
+	name: varchar('name').notNull(),
+	description: varchar('description').notNull(),
+
+	isRestricted: boolean('isRestricted').notNull(),
+
+	facilityId: varchar('facilityId').notNull(),
+});

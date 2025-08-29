@@ -8,7 +8,7 @@
 
 <Sidebar.Provider>
 	<AppSidebar cfId={data.cfId} availableFacilities={data.availableFacilities} currentFacility={data.currentFacility} />
-	<main>
+	<main class="p-4">
 		{@render children?.()}
 	</main>
 </Sidebar.Provider>

@@ -1,3 +1,11 @@
+CREATE TABLE "exam" (
+	"id" serial PRIMARY KEY NOT NULL,
+	"name" varchar NOT NULL,
+	"description" varchar NOT NULL,
+	"isRestricted" boolean NOT NULL,
+	"facilityId" varchar NOT NULL
+);
+--> statement-breakpoint
 CREATE TABLE "facilityRole" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"userId" integer NOT NULL,

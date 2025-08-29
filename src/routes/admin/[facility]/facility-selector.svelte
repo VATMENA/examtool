@@ -39,7 +39,7 @@
 						selectedFacility = facility;
 						for (const [facilityId, facilityName] of Object.entries(dFacilities)) {
 							if (selectedFacility === facilityName) {
-								await goto(`/admin/${facilityId}`);
+								await goto(`/admin/${facilityId}/exams`);
 							}
 						}
 					}}>

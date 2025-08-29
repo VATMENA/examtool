@@ -1,9 +1,52 @@
 {
-  "id": "966701fe-aef2-4693-93c7-6a693cba5be7",
+  "id": "f2da7014-dba6-49f9-b22f-a10e9697eb73",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
+    "public.exam": {
+      "name": "exam",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "isRestricted": {
+          "name": "isRestricted",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "facilityId": {
+          "name": "facilityId",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
     "public.facilityRole": {
       "name": "facilityRole",
       "schema": "",
