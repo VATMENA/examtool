@@ -43,6 +43,10 @@ export const exam = pgTable('exam', {
 	isRestricted: boolean('isRestricted').notNull(),
 
 	facilityId: varchar('facilityId').notNull(),
+
+	examTimeAlotted: integer('examTimeAlotted'),
+
+	examQuestionCount: integer('examQuestionCount').notNull(),
 });
 
 export const examRelations = relations(exam, ({ many }) => ({
@@ -69,4 +73,21 @@ export const auditLogEntry = pgTable('auditLogEntry', {
 	action: varchar('action').notNull(),
 	data: json('data').notNull(),
 	facilityId: varchar('facilityId').notNull(),
+});
+
+export const examAdministration = pgTable('examAdministration', {
+	id: serial('id').primaryKey(),
+
+	examId: integer('examId').references(() => exam.id).notNull(),
+	userId: integer('userId').references(() => user.id).notNull(),
+
+	examData: json('examData').notNull(),
+
+	startedAt: integer('startedAt').notNull(),
+	timeExpiresAt: integer('timeExpiresAt').notNull(),
+
+	isSubmitted: boolean('isSubmitted').notNull(),
+
+	points: integer('points').notNull(),
+	pointsAvailable: integer('pointsAvailable').notNull(),
 });

@@ -32,7 +32,9 @@ export const actions: Actions = {
 				name: form.data.name,
 				description: form.data.description,
 				isRestricted: form.data.isRestricted,
-				facilityId: event.params.facility
+				facilityId: event.params.facility,
+				examTimeAlotted: form.data.timeAlottedHrs * 60 * 60 + form.data.timeAlottedMins * 60,
+				examQuestionCount: form.data.numberOfQuestions
 			})
 			.returning();
 

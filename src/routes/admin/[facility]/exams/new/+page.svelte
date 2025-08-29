@@ -53,6 +53,36 @@
 			{/snippet}
 		</Form.Control>
 	</Form.Field>
+	<Form.Field {form} name="numberOfQuestions">
+		<Form.Control>
+			{#snippet children({ props })}
+				<Form.Label>Number Of Questions</Form.Label>
+				<Input type="number" {...props} bind:value={$formData.numberOfQuestions} />
+			{/snippet}
+		</Form.Control>
+		<Form.Description>Questions will be randomly selected from the question bank</Form.Description>
+		<Form.FieldErrors />
+	</Form.Field>
+	<div class="flex flex-row gap-2">
+		<Form.Field {form} name="timeAlottedHrs">
+			<Form.Control>
+				{#snippet children({ props })}
+					<Form.Label>Time Alotted (hours)</Form.Label>
+					<Input type="number" {...props} bind:value={$formData.timeAlottedHrs} />
+				{/snippet}
+			</Form.Control>
+			<Form.FieldErrors />
+		</Form.Field>
+		<Form.Field {form} name="timeAlottedMins">
+			<Form.Control>
+				{#snippet children({ props })}
+					<Form.Label>Time Alotted (minutes)</Form.Label>
+					<Input type="number" {...props} bind:value={$formData.timeAlottedMins} />
+				{/snippet}
+			</Form.Control>
+			<Form.FieldErrors />
+		</Form.Field>
+	</div>
 
 	<Form.Button>
 		Create

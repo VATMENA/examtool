@@ -29,6 +29,20 @@
       "when": 1756432610260,
       "tag": "0003_add_audit_log_fId",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1756472444194,
+      "tag": "0004_exam_admin_meta",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1756476915528,
+      "tag": "0005_add_exam_administration",
+      "breakpoints": true
     }
   ]
 }
