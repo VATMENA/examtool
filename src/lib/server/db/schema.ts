@@ -51,6 +51,7 @@ export const exam = pgTable('exam', {
 
 export const examRelations = relations(exam, ({ many }) => ({
 	questions: many(examAvailableQuestion),
+	attempts: many(examAdministration)
 }));
 
 export const examAvailableQuestion = pgTable('examAvailableQuestion', {
@@ -90,4 +91,29 @@ export const examAdministration = pgTable('examAdministration', {
 
 	points: integer('points').notNull(),
 	pointsAvailable: integer('pointsAvailable').notNull(),
+
+	ticketId: integer('ticketId').notNull().references(() => examTicket.id).notNull(),
+});
+
+export const examAdministrationRelations = relations(examAdministration, ({ one }) => ({
+	exam: one(exam, {
+		fields: [examAdministration.examId],
+		references: [exam.id]
+	}),
+}));
+
+export const examTicket = pgTable('examTicket', {
+	id: serial('id').primaryKey(),
+
+	ticket: varchar('ticket').notNull().unique(),
+
+	timestamp: integer('timestamp').notNull(),
+	validUntil: integer('validUntil').notNull(),
+
+	examId: integer('examId').references(() => exam.id).notNull(),
+
+	studentId: integer('studentId').references(() => user.id).notNull(),
+	issuerId: integer('issuerId').references(() => user.id).notNull(),
+
+	valid: boolean('valid').notNull(),
 });

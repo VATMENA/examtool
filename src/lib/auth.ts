@@ -23,6 +23,21 @@ export function generateSecureRandomString(): string {
 	}
 	return id;
 }
+
+export function generateExamTicket(): string {
+	const alphabet = "abcdefghijkmnpqrstuvwxyz23456789";
+
+	const bytes = new Uint8Array(6);
+	crypto.getRandomValues(bytes);
+
+	let id = "";
+	for (let i = 0; i < bytes.length; i++) {
+		// >> 3 "removes" the right-most 3 bits of the byte
+		id += alphabet[bytes[i] >> 3];
+	}
+	return id;
+}
+
 export async function createSession(userId: number): Promise<SessionWithToken> {
 	const now = new Date();
 

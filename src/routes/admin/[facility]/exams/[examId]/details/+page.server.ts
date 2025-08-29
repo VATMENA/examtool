@@ -21,8 +21,15 @@ export const load: PageServerLoad = async ({ cookies, params }) => {
 		redirect(301, `/admin/${params.facility}/exams`);
 	}
 
+	let startingData = thisExam;
+	const hours = Math.floor(startingData.examTimeAlotted / 3600);
+	const minutes = Math.floor((startingData.examTimeAlotted % 3600) / 60);
+	startingData.timeAlottedHrs = hours;
+	startingData.timeAlottedMins = minutes;
+	startingData.numberOfQuestions = startingData.examQuestionCount;
+
 	return {
-		form: await superValidate(thisExam, zod(examSchema))
+		form: await superValidate(startingData, zod(examSchema))
 	}
 }
 
@@ -41,7 +48,9 @@ export const actions: Actions = {
 				name: form.data.name,
 				description: form.data.description,
 				isRestricted: form.data.isRestricted,
-				facilityId: event.params.facility
+				facilityId: event.params.facility,
+				examTimeAlotted: form.data.timeAlottedHrs * 60 * 60 + form.data.timeAlottedMins * 60,
+				examQuestionCount: form.data.numberOfQuestions
 			})
 			.where(eq(exam.id, Number.parseInt(event.params.examId)))
 			.returning();

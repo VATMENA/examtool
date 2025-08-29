@@ -21,14 +21,14 @@
 			<div class="flex flex-col gap-1">
 				<Button class="w-full" href="/select/selfadmitted">
 					<BookOpenCheckIcon />
-					I want to take a public exam
+					Take a theoretical exam
 				</Button>
 			</div>
 
 			<div class="flex flex-col gap-1">
 				<Button variant="outline" class="w-full" href="/select/ticket">
 					<TicketCheckIcon />
-					My instructor gave me a code
+					I have an exam ticket
 				</Button>
 			</div>
 		</Card.Content>

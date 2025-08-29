@@ -1,0 +1,1 @@
+ALTER TABLE "examTicket" ADD COLUMN "valid" boolean NOT NULL;
