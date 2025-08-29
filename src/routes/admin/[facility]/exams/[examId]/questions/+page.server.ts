@@ -1,0 +1,38 @@
+import type { PageServerLoad } from "./$types";
+import { currentTimestamp, requireAuth, requireRole } from '$lib/auth';
+import { ROLE_ADMIN } from '$lib/authShared';
+import { redirect } from '@sveltejs/kit';
+import { db } from '$lib/server/db';
+import { auditLogEntry, examAvailableQuestion, exam } from '$lib/server/db/schema';
+import { eq } from 'drizzle-orm';
+
+export const load: PageServerLoad = async ({ cookies, params }) => {
+	const session = await requireRole(requireAuth(cookies), ROLE_ADMIN);
+	if (!session.metRoleIn.includes(params.facility)) { redirect(301, "/select"); }
+
+	const thisExam = await db.query.exam.findFirst({
+		where: eq(exam.id, Number.parseInt(params.examId)),
+		with: {
+			questions: true
+		}
+	});
+
+	if (!thisExam) {
+		redirect(301, `/${params.facility}/exams`);
+	}
+
+	await db.insert(auditLogEntry)
+		.values({
+			timestamp: currentTimestamp(),
+			userId: session.user.id,
+			action: `Accessed questions of exam ${exam.name}`,
+			data: {},
+			facilityId: params.facility
+		});
+
+	console.log(thisExam);
+
+	return {
+		thisExam
+	}
+};
