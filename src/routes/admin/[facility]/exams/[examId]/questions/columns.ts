@@ -3,6 +3,7 @@ import type { exam, examAvailableQuestion } from '$lib/server/db/schema';
 import { renderComponent } from '$lib/components/ui/data-table';
 import { questionTypes } from './questionSchema';
 import type { MultipleChoiceQuestion, Question as SQuestion } from '$lib/question';
+import DataTableActions from "./data-table-actions.svelte";
 
 export type Question = typeof examAvailableQuestion.$inferSelect;
 
@@ -34,6 +35,7 @@ export const columns: ColumnDef<Question>[] = [
 	{
 		header: "Actions",
 		cell: ({ row }) => {
+			return renderComponent(DataTableActions, { examId: row.original.examId, questionId: row.original.id });
 		}
 	}
 ]
