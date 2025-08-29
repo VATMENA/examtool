@@ -29,18 +29,12 @@
 							{/snippet}
 						</Sidebar.MenuButton>
 					</Sidebar.MenuItem>
-					<Sidebar.MenuItem>
-						<Sidebar.MenuButton isActive={page.url.pathname.startsWith(`/admin/${cfId}/bank`)}>
-							{#snippet child({ props })}
-								<a href="/admin/{cfId}/bank" {...props}>Question Bank</a>
-							{/snippet}
-						</Sidebar.MenuButton>
-					</Sidebar.MenuItem>
 
 				</Sidebar.Menu>
 			</Sidebar.GroupContent>
 		</Sidebar.Group>
 
+		<!--
 		<Sidebar.Group>
 			<Sidebar.GroupLabel>Tickets</Sidebar.GroupLabel>
 			<Sidebar.GroupContent>
@@ -64,6 +58,7 @@
 				</Sidebar.Menu>
 			</Sidebar.GroupContent>
 		</Sidebar.Group>
+
 
 		<Sidebar.Group>
 			<Sidebar.GroupLabel>Facility Management</Sidebar.GroupLabel>
@@ -89,6 +84,7 @@
 				</Sidebar.Menu>
 			</Sidebar.GroupContent>
 		</Sidebar.Group>
+		-->
 
 		<Sidebar.Group>
 			<Sidebar.GroupLabel>Navigation</Sidebar.GroupLabel>

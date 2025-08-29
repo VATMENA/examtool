@@ -1,12 +1,12 @@
 import type { PageServerLoad, Actions } from "./$types";
-import { requireAuth, requireRole } from '$lib/auth';
+import { currentTimestamp, requireAuth, requireRole } from '$lib/auth';
 import { ROLE_ADMIN } from '$lib/authShared';
 import { fail, redirect } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { examSchema } from '../examSchema';
 import { db } from '$lib/server/db';
-import { exam } from '$lib/server/db/schema';
+import { auditLogEntry, exam } from '$lib/server/db/schema';
 
 export const load: PageServerLoad = async ({ cookies, params }) => {
 	const session = await requireRole(requireAuth(cookies), ROLE_ADMIN);
@@ -27,14 +27,23 @@ export const actions: Actions = {
 		const session = await requireRole(requireAuth(event.cookies), ROLE_ADMIN);
 		if (!session.metRoleIn.includes(event.params.facility)) { redirect(301, "/select"); }
 
-		await db.insert(exam)
+		const data = await db.insert(exam)
 			.values({
 				name: form.data.name,
 				description: form.data.description,
 				isRestricted: form.data.isRestricted,
 				facilityId: event.params.facility
-			});
+			})
+			.returning();
 
+		await db.insert(auditLogEntry)
+			.values({
+				timestamp: currentTimestamp(),
+				userId: session.user.id,
+				action: `Created new exam ${form.data.name}`,
+				data,
+				facilityId: event.params.facility
+			});
 
 		return { form };
 	}

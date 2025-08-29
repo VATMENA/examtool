@@ -8,8 +8,6 @@ export const load: PageServerLoad = async ({ cookies }) => {
 	const hasInstructorAnywhereRoleset = await requireRole(requireAuth(cookies), ROLE_INSTRUCTOR, false);
 	const hasAdminAnywhereRoleset = await requireRole(requireAuth(cookies), ROLE_ADMIN, false);
 
-	console.log('AA', hasAdminAnywhereRoleset);
-
 	return {
 		user: session.user,
 		instructorIn: hasInstructorAnywhereRoleset.metRoleIn.length !== 0 ? hasAdminAnywhereRoleset.metRoleIn[0] : null,

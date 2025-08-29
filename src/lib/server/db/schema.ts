@@ -1,4 +1,4 @@
-import { pgTable, integer, varchar, unique, serial, boolean } from 'drizzle-orm/pg-core';
+import { pgTable, integer, varchar, unique, serial, boolean, json } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 
 export const user = pgTable('user', {
@@ -42,5 +42,31 @@ export const exam = pgTable('exam', {
 
 	isRestricted: boolean('isRestricted').notNull(),
 
+	facilityId: varchar('facilityId').notNull(),
+});
+
+export const examRelations = relations(exam, ({ many }) => ({
+	questions: many(examAvailableQuestion),
+}));
+
+export const examAvailableQuestion = pgTable('examAvailableQuestion', {
+	id: serial('id').primaryKey(),
+	examId: integer('examId').references(() => exam.id).notNull(),
+	questionData: json('questionData').notNull(),
+});
+
+export const examAvailableQuestionRelations = relations(examAvailableQuestion, ({ one }) => ({
+	exam: one(exam, {
+		fields: [examAvailableQuestion.examId],
+		references: [exam.id]
+	})
+}));
+
+export const auditLogEntry = pgTable('auditLogEntry', {
+	id: serial('id').primaryKey(),
+	timestamp: integer('timestamp').notNull(),
+	userId: integer('userId').notNull(),
+	action: varchar('action').notNull(),
+	data: json('data').notNull(),
 	facilityId: varchar('facilityId').notNull(),
 });

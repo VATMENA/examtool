@@ -1,0 +1,1 @@
+ALTER TABLE "auditLogEntry" ADD COLUMN "facilityId" varchar NOT NULL;

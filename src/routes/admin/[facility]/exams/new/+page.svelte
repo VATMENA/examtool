@@ -6,6 +6,8 @@
 	import { zodClient } from 'sveltekit-superforms/adapters';
 	import { Input } from '$lib/components/ui/input';
 	import { Switch } from '$lib/components/ui/switch';
+	import { goto } from '$app/navigation';
+	import { page } from '$app/state';
 
 	let { data }: PageProps = $props();
 

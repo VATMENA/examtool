@@ -206,3 +206,7 @@ export interface AuthenticatedSession extends Session {
 export interface RoleAuthenticatedSession extends AuthenticatedSession {
 	metRoleIn: string[]
 }
+
+export function currentTimestamp(): number {
+	return Math.floor(new Date().getTime() / 1000);
+}
