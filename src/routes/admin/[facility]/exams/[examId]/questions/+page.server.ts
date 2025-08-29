@@ -1,10 +1,11 @@
-import type { PageServerLoad } from "./$types";
 import { currentTimestamp, requireAuth, requireRole } from '$lib/auth';
 import { ROLE_ADMIN } from '$lib/authShared';
-import { redirect } from '@sveltejs/kit';
+import type { PageServerLoad } from "./$types";
 import { db } from '$lib/server/db';
-import { auditLogEntry, examAvailableQuestion, exam } from '$lib/server/db/schema';
+import { redirect } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
+import { auditLogEntry, exam } from '$lib/server/db/schema';
+
 
 export const load: PageServerLoad = async ({ cookies, params }) => {
 	const session = await requireRole(requireAuth(cookies), ROLE_ADMIN);
@@ -25,7 +26,7 @@ export const load: PageServerLoad = async ({ cookies, params }) => {
 		.values({
 			timestamp: currentTimestamp(),
 			userId: session.user.id,
-			action: `Accessed questions of exam ${exam.name}`,
+			action: `Accessed questions of exam ${thisExam.name}`,
 			data: {},
 			facilityId: params.facility
 		});
