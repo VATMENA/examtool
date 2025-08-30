@@ -58,7 +58,7 @@
 		<Card.Content class="flex flex-col gap-4 items-center">
 			<Alert.Root>
 				<AlertCircleIcon />
-				<Alert.Title>Ensure you have enough time for this exam</Alert.Title>
+				<Alert.Title>Ensure you have enough time</Alert.Title>
 				<Alert.Description>
 					Once you start the exam, you will not be able to pause the timer.
 					If you do not have time for this exam, return here later. <b>Your timer will not start until you press "Start Exam" below.</b>

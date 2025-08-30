@@ -93,12 +93,37 @@ export const examAdministration = pgTable('examAdministration', {
 	pointsAvailable: integer('pointsAvailable').notNull(),
 
 	ticketId: integer('ticketId').notNull().references(() => examTicket.id).notNull(),
-});
 
-export const examAdministrationRelations = relations(examAdministration, ({ one }) => ({
+	hasPendingGrade: boolean('hasPendingGrade').notNull().default(true),
+});
+export const examAdministrationAnswer = pgTable('examAdministrationAnswer', {
+	id: serial('id').primaryKey(),
+
+	examAdministrationId: integer('examAdministrationId').references(() => examAdministration.id).notNull(),
+	questionId: integer('questionId').notNull(),
+
+	answer: json('answer').notNull(),
+
+	isGraded: boolean('isGraded').notNull(),
+	requiresManualGrading: boolean('requiresManualGrading').notNull(),
+
+	pointsGiven: integer('pointsGiven').notNull(),
+	pointsPossible: integer('pointsPossible').notNull(),
+}, (t) => [
+	unique().on(t.examAdministrationId, t.questionId)
+]);
+
+export const examAdministrationRelations = relations(examAdministration, ({ one, many }) => ({
 	exam: one(exam, {
 		fields: [examAdministration.examId],
 		references: [exam.id]
+	}),
+	answers: many(examAdministrationAnswer),
+}));
+export const examAdministrationAnswerRelations = relations(examAdministrationAnswer, ({ one }) => ({
+	examAdministration: one(examAdministration, {
+		fields: [examAdministrationAnswer.examAdministrationId],
+		references: [examAdministration.id]
 	}),
 }));
 

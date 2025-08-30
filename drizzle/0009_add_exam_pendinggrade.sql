@@ -1,0 +1,1 @@
+ALTER TABLE "examAdministration" ADD COLUMN "hasPendingGrade" boolean DEFAULT true NOT NULL;

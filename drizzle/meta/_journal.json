@@ -57,6 +57,20 @@
       "when": 1756482230035,
       "tag": "0007_add_exam_ticket_valid",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1756514618262,
+      "tag": "0008_add_exam_answer",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1756517286747,
+      "tag": "0009_add_exam_pendinggrade",
+      "breakpoints": true
     }
   ]
 }

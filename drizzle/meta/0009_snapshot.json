@@ -1,0 +1,624 @@
+{
+  "id": "67c89bb7-7b76-4259-94d6-eb02c5e80942",
+  "prevId": "aa599d23-31eb-40bb-a9af-64f794d9e901",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.auditLogEntry": {
+      "name": "auditLogEntry",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "timestamp": {
+          "name": "timestamp",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "userId": {
+          "name": "userId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "action": {
+          "name": "action",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "data": {
+          "name": "data",
+          "type": "json",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "facilityId": {
+          "name": "facilityId",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.exam": {
+      "name": "exam",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "isRestricted": {
+          "name": "isRestricted",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "facilityId": {
+          "name": "facilityId",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "examTimeAlotted": {
+          "name": "examTimeAlotted",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "examQuestionCount": {
+          "name": "examQuestionCount",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.examAdministration": {
+      "name": "examAdministration",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "examId": {
+          "name": "examId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "userId": {
+          "name": "userId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "examData": {
+          "name": "examData",
+          "type": "json",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "startedAt": {
+          "name": "startedAt",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "timeExpiresAt": {
+          "name": "timeExpiresAt",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "isSubmitted": {
+          "name": "isSubmitted",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "points": {
+          "name": "points",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "pointsAvailable": {
+          "name": "pointsAvailable",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "ticketId": {
+          "name": "ticketId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "hasPendingGrade": {
+          "name": "hasPendingGrade",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "examAdministration_examId_exam_id_fk": {
+          "name": "examAdministration_examId_exam_id_fk",
+          "tableFrom": "examAdministration",
+          "tableTo": "exam",
+          "columnsFrom": [
+            "examId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "examAdministration_userId_user_id_fk": {
+          "name": "examAdministration_userId_user_id_fk",
+          "tableFrom": "examAdministration",
+          "tableTo": "user",
+          "columnsFrom": [
+            "userId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "examAdministration_ticketId_examTicket_id_fk": {
+          "name": "examAdministration_ticketId_examTicket_id_fk",
+          "tableFrom": "examAdministration",
+          "tableTo": "examTicket",
+          "columnsFrom": [
+            "ticketId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.examAdministrationAnswer": {
+      "name": "examAdministrationAnswer",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "examAdministrationId": {
+          "name": "examAdministrationId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "questionId": {
+          "name": "questionId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "answer": {
+          "name": "answer",
+          "type": "json",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "isGraded": {
+          "name": "isGraded",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "requiresManualGrading": {
+          "name": "requiresManualGrading",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "pointsGiven": {
+          "name": "pointsGiven",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "pointsPossible": {
+          "name": "pointsPossible",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "examAdministrationAnswer_examAdministrationId_examAdministration_id_fk": {
+          "name": "examAdministrationAnswer_examAdministrationId_examAdministration_id_fk",
+          "tableFrom": "examAdministrationAnswer",
+          "tableTo": "examAdministration",
+          "columnsFrom": [
+            "examAdministrationId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "examAdministrationAnswer_examAdministrationId_questionId_unique": {
+          "name": "examAdministrationAnswer_examAdministrationId_questionId_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "examAdministrationId",
+            "questionId"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.examAvailableQuestion": {
+      "name": "examAvailableQuestion",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "examId": {
+          "name": "examId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "questionData": {
+          "name": "questionData",
+          "type": "json",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "examAvailableQuestion_examId_exam_id_fk": {
+          "name": "examAvailableQuestion_examId_exam_id_fk",
+          "tableFrom": "examAvailableQuestion",
+          "tableTo": "exam",
+          "columnsFrom": [
+            "examId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.examTicket": {
+      "name": "examTicket",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "ticket": {
+          "name": "ticket",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "timestamp": {
+          "name": "timestamp",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "validUntil": {
+          "name": "validUntil",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "examId": {
+          "name": "examId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "studentId": {
+          "name": "studentId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "issuerId": {
+          "name": "issuerId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "valid": {
+          "name": "valid",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "examTicket_examId_exam_id_fk": {
+          "name": "examTicket_examId_exam_id_fk",
+          "tableFrom": "examTicket",
+          "tableTo": "exam",
+          "columnsFrom": [
+            "examId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "examTicket_studentId_user_id_fk": {
+          "name": "examTicket_studentId_user_id_fk",
+          "tableFrom": "examTicket",
+          "tableTo": "user",
+          "columnsFrom": [
+            "studentId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "examTicket_issuerId_user_id_fk": {
+          "name": "examTicket_issuerId_user_id_fk",
+          "tableFrom": "examTicket",
+          "tableTo": "user",
+          "columnsFrom": [
+            "issuerId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "examTicket_ticket_unique": {
+          "name": "examTicket_ticket_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "ticket"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.facilityRole": {
+      "name": "facilityRole",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "userId": {
+          "name": "userId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "facilityId": {
+          "name": "facilityId",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "role": {
+          "name": "role",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "facilityRole_userId_user_id_fk": {
+          "name": "facilityRole_userId_user_id_fk",
+          "tableFrom": "facilityRole",
+          "tableTo": "user",
+          "columnsFrom": [
+            "userId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "facilityRole_userId_facilityId_unique": {
+          "name": "facilityRole_userId_facilityId_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "userId",
+            "facilityId"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.session": {
+      "name": "session",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "varchar",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "secretHash": {
+          "name": "secretHash",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "userId": {
+          "name": "userId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "session_userId_user_id_fk": {
+          "name": "session_userId_user_id_fk",
+          "tableFrom": "session",
+          "tableTo": "user",
+          "columnsFrom": [
+            "userId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.user": {
+      "name": "user",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name_first": {
+          "name": "name_first",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "name_last": {
+          "name": "name_last",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    }
+  },
+  "enums": {},
+  "schemas": {},
+  "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}
