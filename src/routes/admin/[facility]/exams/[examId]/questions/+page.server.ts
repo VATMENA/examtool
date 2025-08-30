@@ -15,7 +15,9 @@ export const load: PageServerLoad = async ({ cookies, params }) => {
 	const thisExam = await db.query.exam.findFirst({
 		where: eq(exam.id, Number.parseInt(params.examId)),
 		with: {
-			questions: true
+			questions: {
+				orderBy: (questions, { asc }) => [asc(questions.id)],
+			}
 		}
 	});
 
