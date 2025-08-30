@@ -34,6 +34,7 @@ export const load: PageServerLoad = async ({ cookies }) => {
 	}
 
 	return {
+		metRoleIn: session.metRoleIn,
 		user: session.user,
 		instructorIn:
 			hasInstructorAnywhereRoleset.metRoleIn.length !== 0

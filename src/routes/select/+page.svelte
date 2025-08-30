@@ -18,19 +18,23 @@
 			<Card.Title class="text-2xl text-center">Hello, {data.user.name_first}</Card.Title>
 		</Card.Header>
 		<Card.Content class="flex flex-col gap-4">
-			<div class="flex flex-col gap-1">
-				<Button class="w-full" href="/select/selfadmitted">
-					<BookOpenCheckIcon />
-					Take a theoretical exam
-				</Button>
-			</div>
+			{#if data.metRoleIn.length === 0}
+				<div class="flex flex-col gap-1">
+					<Button class="w-full" href="/select/selfadmitted">
+						<BookOpenCheckIcon />
+						Take a theoretical exam
+					</Button>
+				</div>
 
-			<div class="flex flex-col gap-1">
-				<Button variant="outline" class="w-full" href="/select/ticket">
-					<TicketCheckIcon />
-					I have an exam ticket
-				</Button>
-			</div>
+				<div class="flex flex-col gap-1">
+					<Button variant="outline" class="w-full" href="/select/ticket">
+						<TicketCheckIcon />
+						I have an exam ticket
+					</Button>
+				</div>
+			{:else}
+				<p class="text-muted-foreground text-center">You are not a student in any facility. If you think this is in error, please contact the ATC Training Department.</p>
+			{/if}
 		</Card.Content>
 		<Card.Footer class="flex flex-col gap-2">
 			<Separator class="mb-4" />
