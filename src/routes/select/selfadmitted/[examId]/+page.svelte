@@ -3,16 +3,10 @@
 	import * as Form from '$lib/components/ui/form';
 	import { Button } from '$lib/components/ui/button';
 	import type { PageProps } from './$types';
-	import BookOpenCheckIcon from '@lucide/svelte/icons/book-open-check';
 	import FileClockIcon from '@lucide/svelte/icons/file-clock';
-	import GraduationCapIcon from '@lucide/svelte/icons/graduation-cap';
-	import SquareKanbanIcon from '@lucide/svelte/icons/square-kanban';
-	import * as InputOTP from '$lib/components/ui/input-otp';
-	import TicketCheckIcon from '@lucide/svelte/icons/ticket-check';
 	import * as Alert from '$lib/components/ui/alert';
 	import AlertCircleIcon from '@lucide/svelte/icons/alert-circle';
 	import { Separator } from '$lib/components/ui/separator';
-	import { facilities } from '$lib/facilities';
 	import { Label } from '$lib/components/ui/label';
 	import { Checkbox } from '$lib/components/ui/checkbox';
 
@@ -40,11 +34,6 @@
 	};
 
 	let agreedToTerms = $state(false);
-
-	function startExam() {
-		// "Self-admitted" exams really just generate an exam ticket and then immediately redeem it.
-		// Simpler to implement code-wise.
-	}
 </script>
 
 <div class="flex h-screen w-full items-center justify-center px-4">

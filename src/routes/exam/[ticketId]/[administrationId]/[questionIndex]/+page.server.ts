@@ -162,6 +162,7 @@ export const actions: Actions = {
 		const answerDataForm = await event.request.formData();
 		const answerData = await JSON.parse(answerDataForm.get('answerData'));
 
+		// eslint-disable-next-line
 		let userQuestionAnswer: any;
 		let isGraded = false;
 		let requiresManualGrading = true;

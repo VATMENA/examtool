@@ -3,21 +3,11 @@
 	import * as Alert from '$lib/components/ui/alert';
 	import { Button } from '$lib/components/ui/button';
 	import type { PageProps } from './$types';
-	import BookOpenCheckIcon from '@lucide/svelte/icons/book-open-check';
-	import FileClockIcon from '@lucide/svelte/icons/file-clock';
-	import GraduationCapIcon from '@lucide/svelte/icons/graduation-cap';
-	import SquareKanbanIcon from '@lucide/svelte/icons/square-kanban';
-	import * as InputOTP from '$lib/components/ui/input-otp';
-	import * as RadioGroup from '$lib/components/ui/radio-group';
-	import TicketCheckIcon from '@lucide/svelte/icons/ticket-check';
 	import ArrowLeftIcon from '@lucide/svelte/icons/arrow-left';
 	import CircleCheckIcon from '@lucide/svelte/icons/circle-check';
-	import ArrowRightIcon from '@lucide/svelte/icons/arrow-right';
+
 	import { Separator } from '$lib/components/ui/separator';
 	import { goto } from '$app/navigation';
-	import { Label } from '$lib/components/ui/label';
-	import { onMount } from 'svelte';
-	import { SvelteURLSearchParams } from 'svelte/reactivity';
 
 	const { data }: PageProps = $props();
 

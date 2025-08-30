@@ -23,7 +23,7 @@ export const load: PageServerLoad = async ({ cookies, params }) => {
 		redirect(301, `/admin/${params.facility}/exams`);
 	}
 
-	let startingData = thisExam;
+	const startingData = thisExam;
 	const hours = Math.floor(startingData.examTimeAlotted / 3600);
 	const minutes = Math.floor((startingData.examTimeAlotted % 3600) / 60);
 	startingData.timeAlottedHrs = hours;

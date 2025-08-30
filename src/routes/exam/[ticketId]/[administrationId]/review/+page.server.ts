@@ -1,16 +1,10 @@
 import { currentTimestamp, requireAuth, requireRole } from '$lib/auth';
 import { redirect } from '@sveltejs/kit';
-import type { PageServerLoad, Actions } from './$types';
+import type { PageServerLoad } from './$types';
 import { ROLE_STUDENT } from '$lib/authShared';
-import { and, eq } from 'drizzle-orm';
-import {
-	exam,
-	examAdministrationAnswer,
-	examAvailableQuestion,
-	examTicket
-} from '$lib/server/db/schema';
+import { eq } from 'drizzle-orm';
+import { exam, examAvailableQuestion, examTicket } from '$lib/server/db/schema';
 import { db } from '$lib/server/db';
-import type { MultipleChoiceQuestion, Question } from '$lib/question';
 
 export const load: PageServerLoad = async ({ cookies, params }) => {
 	const session = await requireRole(requireAuth(cookies), ROLE_STUDENT, true);

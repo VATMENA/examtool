@@ -1,6 +1,6 @@
 <script lang="ts">
 	import * as Form from '$lib/components/ui/form';
-	import { examSchema, type ExamSchema } from '../../examSchema';
+	import { examSchema } from '../../examSchema';
 	import type { PageProps } from './$types';
 	import { superForm } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
@@ -20,7 +20,7 @@
 			}
 		}
 	});
-	const { form: formData, enhance, delayed } = form;
+	const { form: formData, enhance } = form;
 </script>
 
 <h1 class="text-2xl mb-4">Update Exam</h1>

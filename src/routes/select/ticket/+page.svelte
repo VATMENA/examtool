@@ -1,17 +1,12 @@
 <script lang="ts">
 	import * as Card from '$lib/components/ui/card';
-	import * as Alert from '$lib/components/ui/alert';
 	import { Button } from '$lib/components/ui/button';
-	import type { PageProps } from './$types';
-	import BookOpenCheckIcon from '@lucide/svelte/icons/book-open-check';
+	//import type { PageProps } from './$types';
 	import FileClockIcon from '@lucide/svelte/icons/file-clock';
-	import GraduationCapIcon from '@lucide/svelte/icons/graduation-cap';
-	import SquareKanbanIcon from '@lucide/svelte/icons/square-kanban';
 	import * as InputOTP from '$lib/components/ui/input-otp';
-	import TicketCheckIcon from '@lucide/svelte/icons/ticket-check';
 	import { Separator } from '$lib/components/ui/separator';
 
-	const { data }: PageProps = $props();
+	//const { data }: PageProps = $props();
 </script>
 
 <div class="flex h-screen w-full items-center justify-center px-4">

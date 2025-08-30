@@ -1,15 +1,9 @@
 import type { PageServerLoad, Actions } from './$types';
 import { currentTimestamp, generateExamTicket, requireAuth, requireRole } from '$lib/auth';
-import { ROLE_ADMIN, ROLE_STUDENT, ROLE_INSTRUCTOR } from '$lib/authShared';
+import { ROLE_STUDENT } from '$lib/authShared';
 import { db } from '$lib/server/db';
-import {
-	auditLogEntry,
-	exam,
-	examAdministration,
-	examAvailableQuestion,
-	examTicket
-} from '$lib/server/db/schema';
-import { eq, and } from 'drizzle-orm';
+import { auditLogEntry, exam, examAvailableQuestion, examTicket } from '$lib/server/db/schema';
+import { eq } from 'drizzle-orm';
 import { redirect } from '@sveltejs/kit';
 
 export const load: PageServerLoad = async ({ cookies, params }) => {

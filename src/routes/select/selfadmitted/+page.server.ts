@@ -1,6 +1,6 @@
 import type { PageServerLoad } from './$types';
 import { requireAuth, requireRole } from '$lib/auth';
-import { ROLE_ADMIN, ROLE_STUDENT, ROLE_INSTRUCTOR } from '$lib/authShared';
+import { ROLE_STUDENT } from '$lib/authShared';
 import { db } from '$lib/server/db';
 import { exam, examAdministration } from '$lib/server/db/schema';
 import { eq, and } from 'drizzle-orm';

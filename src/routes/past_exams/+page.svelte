@@ -2,13 +2,8 @@
 	import * as Card from '$lib/components/ui/card';
 	import { Button } from '$lib/components/ui/button';
 	import type { PageProps } from './$types';
-	import BookOpenCheckIcon from '@lucide/svelte/icons/book-open-check';
-	import TicketCheckIcon from '@lucide/svelte/icons/ticket-check';
 	import CircleCheckIcon from '@lucide/svelte/icons/circle-check';
-	import FileClockIcon from '@lucide/svelte/icons/file-clock';
-	import GraduationCapIcon from '@lucide/svelte/icons/graduation-cap';
 	import ArrowLeftIcon from '@lucide/svelte/icons/arrow-left';
-	import SquareKanbanIcon from '@lucide/svelte/icons/square-kanban';
 	import CircleDashedIcon from '@lucide/svelte/icons/circle-dashed';
 	import * as Alert from '$lib/components/ui/alert';
 	import CircleXIcon from '@lucide/svelte/icons/circle-x';

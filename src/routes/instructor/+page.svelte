@@ -2,11 +2,6 @@
 	import * as Card from '$lib/components/ui/card';
 	import { Button } from '$lib/components/ui/button';
 	import type { PageProps } from './$types';
-	import BookOpenCheckIcon from '@lucide/svelte/icons/book-open-check';
-	import TicketCheckIcon from '@lucide/svelte/icons/ticket-check';
-	import FileClockIcon from '@lucide/svelte/icons/file-clock';
-	import GraduationCapIcon from '@lucide/svelte/icons/graduation-cap';
-	import SquareKanbanIcon from '@lucide/svelte/icons/square-kanban';
 	import ClipboardListIcon from '@lucide/svelte/icons/clipboard-list';
 	import ArrowLeftIcon from '@lucide/svelte/icons/arrow-left';
 	import { Separator } from '$lib/components/ui/separator';

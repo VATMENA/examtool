@@ -1,5 +1,5 @@
 import type { ColumnDef } from '@tanstack/table-core';
-import type { exam, examAvailableQuestion } from '$lib/server/db/schema';
+import type { examAvailableQuestion } from '$lib/server/db/schema';
 import { renderComponent } from '$lib/components/ui/data-table';
 import { questionTypes } from './questionSchema';
 import type { MultipleChoiceQuestion, Question as SQuestion } from '$lib/question';

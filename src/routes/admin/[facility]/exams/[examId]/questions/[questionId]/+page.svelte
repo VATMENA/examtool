@@ -1,10 +1,9 @@
 <script lang="ts">
 	import * as Form from '$lib/components/ui/form';
 	import type { PageProps } from './$types';
-	import SuperDebug, { superForm } from 'sveltekit-superforms';
+	import { superForm } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
 	import { Input } from '$lib/components/ui/input';
-	import { Switch } from '$lib/components/ui/switch';
 	import { goto, invalidateAll } from '$app/navigation';
 	import { page } from '$app/state';
 	import { questionSchema, questionTypes } from '../questionSchema';
@@ -25,7 +24,7 @@
 			}
 		}
 	});
-	const { form: formData, enhance, delayed } = form;
+	const { form: formData, enhance } = form;
 
 	async function remove() {
 		await fetch('?/remove', {

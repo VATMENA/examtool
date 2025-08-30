@@ -1,6 +1,5 @@
 <script lang="ts">
 	import * as Sidebar from '$lib/components/ui/sidebar';
-	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 	import FacilitySelector from './facility-selector.svelte';
 	import { page } from '$app/state';
 
