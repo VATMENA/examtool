@@ -18,7 +18,7 @@
 			<Card.Title class="text-2xl text-center">Hello, {data.user.name_first}</Card.Title>
 		</Card.Header>
 		<Card.Content class="flex flex-col gap-4">
-			{#if data.metRoleIn.length === 0}
+			{#if data.metRoleIn.length !== 0}
 				<div class="flex flex-col gap-1">
 					<Button class="w-full" href="/select/selfadmitted">
 						<BookOpenCheckIcon />
