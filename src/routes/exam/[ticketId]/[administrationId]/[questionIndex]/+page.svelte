@@ -18,6 +18,7 @@
 	import { Label } from '$lib/components/ui/label';
 	import { onMount } from 'svelte';
 	import { SvelteURLSearchParams } from 'svelte/reactivity';
+	import { browser } from '$app/environment';
 
 	const { data }: PageProps = $props();
 
@@ -44,7 +45,9 @@
 	}
 
 	async function submitExam() {
-		await goto(`/exam/complete/${data.administrationId}`);
+		if (browser) {
+			await goto(`/exam/complete/${data.administrationId}`);
+		}
 	}
 
 	function timeToGo() {
@@ -56,6 +59,10 @@
 		// Convert string to date object
 		const d = new Date(data.expiryTime * 1000);
 		let diff = d - new Date();
+
+		if (diff < 0) {
+			submitExam();
+		}
 
 		// Allow for previous times
 		const sign = diff < 0 ? '-' : '';

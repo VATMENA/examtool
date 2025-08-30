@@ -37,10 +37,6 @@ export const load: PageServerLoad = async ({ cookies, params }) => {
 		console.log("student mismatch");
 		redirect(301, "/select");
 	}
-	if (thisExamTicket.validUntil < currentTimestamp()) {
-		console.log("ticket expired");
-		redirect(301, "/select");
-	}
 
 	if (thisExamAdministration.timeExpiresAt < currentTimestamp() || thisExamAdministration.isSubmitted) {
 		console.log("administration concluded");

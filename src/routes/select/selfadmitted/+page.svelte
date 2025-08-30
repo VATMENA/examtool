@@ -9,6 +9,7 @@
 	import SquareKanbanIcon from "@lucide/svelte/icons/square-kanban";
 	import * as InputOTP from "$lib/components/ui/input-otp";
 	import TicketCheckIcon from "@lucide/svelte/icons/ticket-check";
+	import ArrowLeftIcon from '@lucide/svelte/icons/arrow-left';
 
 	import { Separator } from '$lib/components/ui/separator';
 	import { facilities } from '$lib/facilities';
@@ -25,13 +26,15 @@
 		<Card.Content class="flex flex-col gap-4 items-center">
 			{#each data.userAvailableExams as exam (exam.id)}
 				<Button variant="outline" href="/select/selfadmitted/{exam.id}">Take {exam.name} ({facilities[exam.facilityId]}) &rarr;</Button>
+			{:else}
+				<p class="text-center text-muted-foreground">No exams are available to you at this time.</p>
 			{/each}
 		</Card.Content>
 		<Card.Footer class="flex flex-col gap-2">
 			<Separator class="mb-4" />
 			<div class="flex flex-row justify-center gap-2">
 				<Button variant="secondary" href="/select">
-					<FileClockIcon />
+					<ArrowLeftIcon />
 					Go back
 				</Button>
 			</div>
