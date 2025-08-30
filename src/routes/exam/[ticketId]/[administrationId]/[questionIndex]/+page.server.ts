@@ -1,7 +1,7 @@
 import { currentTimestamp, requireAuth, requireRole } from '$lib/auth';
 import { redirect } from '@sveltejs/kit';
 import type { PageServerLoad, Actions } from "./$types";
-import { ROLE_STUDENT } from '$lib/authShared';
+import { ROLE_INSTRUCTOR, ROLE_STUDENT } from '$lib/authShared';
 import { and, eq } from 'drizzle-orm';
 import {
 	exam,
@@ -12,9 +12,20 @@ import {
 import { db } from '$lib/server/db';
 import type { MultipleChoiceQuestion, Question } from '$lib/question';
 
-export const load: PageServerLoad = async ({ cookies, params }) => {
+export const load: PageServerLoad = async ({ cookies, params, url }) => {
 	const session = await requireRole(requireAuth(cookies), ROLE_STUDENT, true);
 	// load ticket data
+
+	const maybeInstructor = await requireRole(requireAuth(cookies), ROLE_INSTRUCTOR, false);
+	const isReviewMode = url.searchParams.has("review");
+
+	if (isReviewMode && maybeInstructor.metRoleIn.length === 0) {
+		redirect(301, "/select");
+	}
+
+	if (isReviewMode) {
+		console.log("!! REVIEW MODE !!");
+	}
 
 	const thisExamAdministration = await db.query.examAdministration.findFirst({
 		where: eq(exam.id, Number.parseInt(params.administrationId)),
@@ -30,16 +41,13 @@ export const load: PageServerLoad = async ({ cookies, params }) => {
 	if (!thisExamTicket) { console.log("no exam ticket, redirecting"); redirect(301, "/select"); }
 
 	if (thisExamTicket.valid) {
-		console.log("non-redeemed exam ticket");
 		redirect(301, "/select");
 	}
-	if (thisExamTicket.studentId != session.user.id) {
-		console.log("student mismatch");
+	if (thisExamTicket.studentId != session.user.id && !isReviewMode) {
 		redirect(301, "/select");
 	}
 
-	if (thisExamAdministration.timeExpiresAt < currentTimestamp() || thisExamAdministration.isSubmitted) {
-		console.log("administration concluded");
+	if ((thisExamAdministration.timeExpiresAt < currentTimestamp() || thisExamAdministration.isSubmitted) && !isReviewMode) {
 		redirect(301, `/exam/complete/${thisExamAdministration.id}`);
 	}
 
@@ -52,11 +60,15 @@ export const load: PageServerLoad = async ({ cookies, params }) => {
 	let strippedQuestionData;
 	if (currentQuestionData.type === "multiple-choice") {
 		const q: MultipleChoiceQuestion = currentQuestionData as MultipleChoiceQuestion;
-		strippedQuestionData = {
-			type: "multiple-choice",
-			question: q.question,
-			choices: q.choices.map((u) => u.text)
-		};
+		if (!isReviewMode) {
+			strippedQuestionData = {
+				type: "multiple-choice",
+				question: q.question,
+				choices: q.choices.map((u) => { u.isCorrect = false; return u; })
+			};
+		} else {
+			strippedQuestionData = q;
+		}
 	}
 
 	// check if there is an answer for this question
@@ -79,7 +91,9 @@ export const load: PageServerLoad = async ({ cookies, params }) => {
 		ticketId: thisExamTicket.id,
 		administrationId: thisExamAdministration.id,
 
-		maybeAnswer
+		maybeAnswer,
+		isReviewMode,
+		studentId: thisExamAdministration.userId
 	}
 }
 export const actions: Actions = {

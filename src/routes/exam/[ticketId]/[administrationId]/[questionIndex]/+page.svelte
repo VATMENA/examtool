@@ -19,6 +19,7 @@
 	import { onMount } from 'svelte';
 	import { SvelteURLSearchParams } from 'svelte/reactivity';
 	import { browser } from '$app/environment';
+	import { Badge } from '$lib/components/ui/badge';
 
 	const { data }: PageProps = $props();
 
@@ -45,6 +46,7 @@
 	}
 
 	async function submitExam() {
+		if (data.isReviewMode) return;
 		if (browser) {
 			await goto(`/exam/complete/${data.administrationId}`);
 		}
@@ -60,7 +62,7 @@
 		const d = new Date(data.expiryTime * 1000);
 		let diff = d - new Date();
 
-		if (diff < 0) {
+		if (diff < 0 && !data.isReviewMode) {
 			submitExam();
 		}
 
@@ -78,9 +80,11 @@
 	}
 
 	let countdown = $state(timeToGo());
-	setInterval(() => {
-		countdown = timeToGo();
-	}, 1000);
+	if (!data.isReviewMode) {
+		setInterval(() => {
+			countdown = timeToGo();
+		}, 1000);
+	}
 
 	function determineMcqState(typ: string, maybeAnswer: never): string | null {
 		if (typ === "multiple-choice" && maybeAnswer !== undefined && maybeAnswer !== null) {
@@ -90,24 +94,35 @@
 		}
 	}
 
-	let mcqEnteredAnswer: number | null = $derived(determineMcqState(data.strippedQuestionData.type, data.maybeAnswer));
+	let mcqEnteredAnswer: string | null = $derived(determineMcqState(data.strippedQuestionData.type, data.maybeAnswer));
 </script>
 
 <div class="flex h-screen w-full items-center justify-center px-4">
 	<Card.Root class="mx-auto w-full max-w-sm">
 		<Card.Header>
 			<Card.Title class="text-2xl text-center">Question {data.questionNumber} of {data.totalQuestions}</Card.Title>
-			<Card.Description class="text-center">Taking {data.exam.name} - Exam ends in {countdown}</Card.Description>
+			<Card.Description class="text-center">
+				{#if !data.isReviewMode}
+					Taking {data.exam.name} - Exam ends in {countdown}
+				{:else}
+					Reviewing {data.exam.name}
+				{/if}
+			</Card.Description>
 		</Card.Header>
 		<Card.Content class="flex flex-col gap-4">
 			{#key data.strippedQuestionData}
 				{#if data.strippedQuestionData.type === "multiple-choice"}
 					<h2 class="text-xl font-semibold">{data.strippedQuestionData.question}</h2>
-					<RadioGroup.Root onValueChange={saveCurrentQuestion} bind:value={mcqEnteredAnswer}>
+					<RadioGroup.Root disabled={data.isReviewMode} onValueChange={saveCurrentQuestion} bind:value={mcqEnteredAnswer}>
 						{#each data.strippedQuestionData.choices as choice, i (i)}
 							<div class="flex items-center space-x-2">
 								<RadioGroup.Item value="{i}" id="r-{i}" />
-								<Label for="r-{i}">{choice}</Label>
+								<Label for="r-{i}">{choice.text}</Label>
+								{#if data.isReviewMode && choice.isCorrect}
+									<Badge variant="secondary" class="bg-green-500/20 border-green-500 text-green-950 dark:text-green-50">
+										Correct
+									</Badge>
+								{/if}
 							</div>
 						{/each}
 					</RadioGroup.Root>
@@ -118,23 +133,30 @@
 			<Separator class="mb-4" />
 			<div class="flex flex-row justify-center gap-2">
 				{#if data.questionNumber !== 1}
-					<Button onclick={() => {resetState()}} variant="secondary" href="/exam/{data.ticketId}/{data.administrationId}/{data.questionNumber - 2}">
+					<Button onclick={() => {resetState()}} variant="secondary" href="/exam/{data.ticketId}/{data.administrationId}/{data.questionNumber - 2}{data.isReviewMode ? '?review' : ''}">
 						<ArrowLeftIcon />
 						Previous question
 					</Button>
 				{/if}
 				{#if data.questionNumber !== data.totalQuestions}
-					<Button onclick={() => {resetState()}} variant="secondary" href="/exam/{data.ticketId}/{data.administrationId}/{data.questionNumber}">
+					<Button onclick={() => {resetState()}} variant="secondary" href="/exam/{data.ticketId}/{data.administrationId}/{data.questionNumber}{data.isReviewMode ? '?review' : ''}">
 						Next question
 						<ArrowRightIcon />
 					</Button>
 				{/if}
 
 				{#if data.questionNumber === data.totalQuestions}
-					<Button href="/exam/{data.ticketId}/{data.administrationId}/review" variant="outline">
-						Review and submit
-						<ArrowRightIcon />
-					</Button>
+					{#if !data.isReviewMode}
+						<Button href="/exam/{data.ticketId}/{data.administrationId}/review" variant="outline">
+							Review and submit
+							<ArrowRightIcon />
+						</Button>
+					{:else}
+						<Button href="/instructor/report/{data.studentId}" variant="outline">
+							Finish review
+							<ArrowRightIcon />
+						</Button>
+					{/if}
 				{/if}
 			</div>
 		</Card.Footer>

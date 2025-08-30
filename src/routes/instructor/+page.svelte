@@ -7,7 +7,10 @@
 	import FileClockIcon from "@lucide/svelte/icons/file-clock";
 	import GraduationCapIcon from "@lucide/svelte/icons/graduation-cap";
 	import SquareKanbanIcon from "@lucide/svelte/icons/square-kanban";
+	import ClipboardListIcon from "@lucide/svelte/icons/clipboard-list";
+	import ArrowLeftIcon from '@lucide/svelte/icons/arrow-left';
 	import { Separator } from '$lib/components/ui/separator';
+	import { facilities } from '$lib/facilities';
 
 	const { data }: PageProps = $props();
 </script>
@@ -15,47 +18,25 @@
 <div class="flex h-screen w-full items-center justify-center px-4">
 	<Card.Root class="mx-auto w-full max-w-sm">
 		<Card.Header>
-			<Card.Title class="text-2xl text-center">Hello, {data.user.name_first}</Card.Title>
+			<Card.Title class="text-2xl text-center">Instructor Dashboard</Card.Title>
+			<Card.Description class="text-center">Instructor for {data.rolesIn.map((u) => facilities[u]).join(", ")} exams</Card.Description>
 		</Card.Header>
 		<Card.Content class="flex flex-col gap-4">
 			<div class="flex flex-col gap-1">
-				<Button class="w-full" href="/select/selfadmitted">
-					<BookOpenCheckIcon />
-					Take a theoretical exam
-				</Button>
-			</div>
-
-			<div class="flex flex-col gap-1">
-				<Button variant="outline" class="w-full" href="/select/ticket">
-					<TicketCheckIcon />
-					I have an exam ticket
+				<Button variant="outline" class="w-full" href="/instructor/report">
+					<ClipboardListIcon />
+					Retrieve student exam report
 				</Button>
 			</div>
 		</Card.Content>
 		<Card.Footer class="flex flex-col gap-2">
 			<Separator class="mb-4" />
 			<div class="flex flex-row justify-center gap-2">
-				<Button variant="secondary" href="/past_exams">
-					<FileClockIcon />
-					My past exams
+				<Button variant="secondary" href="/select">
+					<ArrowLeftIcon />
+					Go back
 				</Button>
 			</div>
-			{#if data.instructorIn || data.adminIn}
-				<div class="flex flex-row justify-center gap-2">
-					{#if data.instructorIn}
-						<Button variant="secondary" href="/instructor">
-							<GraduationCapIcon />
-							Instructors
-						</Button>
-					{/if}
-					{#if data.adminIn}
-						<Button variant="secondary" href="/admin/{data.adminIn}/exams">
-							<SquareKanbanIcon />
-							Administrators
-						</Button>
-					{/if}
-				</div>
-			{/if}
 		</Card.Footer>
 	</Card.Root>
 </div>
