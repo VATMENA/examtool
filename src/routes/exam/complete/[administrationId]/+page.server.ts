@@ -22,31 +22,35 @@ export const load: PageServerLoad = async ({ cookies, params }) => {
 			exam: true
 		}
 	});
-	if (!thisExamAdministration) { console.log("no exam, redirecting"); redirect(301, "/select"); }
+	if (!thisExamAdministration) {
+		console.log('no exam, redirecting');
+		redirect(301, '/select');
+	}
 
 	if (thisExamAdministration.userId != session.user.id) {
-		redirect(301, "/select");
+		redirect(301, '/select');
 	}
 
 	if (!thisExamAdministration.isSubmitted) {
 		// mark the exam complete
-		const data = await db.update(examAdministration)
+		const data = await db
+			.update(examAdministration)
 			.set({
 				isSubmitted: true
 			})
 			.where(eq(examAdministration.id, thisExamAdministration.id))
 			.returning();
-		await db.insert(auditLogEntry)
-			.values({
-				timestamp: currentTimestamp(),
-				userId: session.user.id,
-				action: `Sealed exam ${thisExamAdministration.exam.name} administration ${thisExamAdministration.id}`,
-				data,
-				facilityId: thisExamAdministration.exam.facilityId
-			});
+		await db.insert(auditLogEntry).values({
+			timestamp: currentTimestamp(),
+			userId: session.user.id,
+			action: `Sealed exam ${thisExamAdministration.exam.name} administration ${thisExamAdministration.id}`,
+			data,
+			facilityId: thisExamAdministration.exam.facilityId
+		});
 
 		// can we autograde this exam?
-		const examQuestions: typeof examAvailableQuestion.$inferSelect[] = thisExamAdministration.examData as typeof examAvailableQuestion.$inferSelect[];
+		const examQuestions: (typeof examAvailableQuestion.$inferSelect)[] =
+			thisExamAdministration.examData as (typeof examAvailableQuestion.$inferSelect)[];
 		let autoGradable = true;
 		let totalPointsAvailable = 0;
 		let pointsReceived = 0;
@@ -67,7 +71,7 @@ export const load: PageServerLoad = async ({ cookies, params }) => {
 				)
 			});
 			if (!answer) {
-				if (questionData.type === "multiple-choice") {
+				if (questionData.type === 'multiple-choice') {
 					totalPointsAvailable += 4;
 					pointsReceived += 0;
 				}
@@ -83,15 +87,14 @@ export const load: PageServerLoad = async ({ cookies, params }) => {
 		}
 
 		if (autoGradable) {
-			await db.update(examAdministration)
+			await db
+				.update(examAdministration)
 				.set({
 					points: pointsReceived,
 					pointsAvailable: totalPointsAvailable,
 					hasPendingGrade: false
 				})
-				.where(eq(
-					examAdministration.id, thisExamAdministration.id
-				));
+				.where(eq(examAdministration.id, thisExamAdministration.id));
 		}
 	}
 
@@ -106,5 +109,5 @@ export const load: PageServerLoad = async ({ cookies, params }) => {
 		hasPendingGrade: maybeScoredExam.hasPendingGrade,
 		score: maybeScoredExam.points / maybeScoredExam.pointsAvailable,
 		passingScore: 0.8
-	}
-}
+	};
+};

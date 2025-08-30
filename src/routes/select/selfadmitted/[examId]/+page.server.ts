@@ -1,7 +1,7 @@
 import type { PageServerLoad, Actions } from './$types';
 import { currentTimestamp, generateExamTicket, requireAuth, requireRole } from '$lib/auth';
 import { ROLE_ADMIN, ROLE_STUDENT, ROLE_INSTRUCTOR } from '$lib/authShared';
-import { db } from "$lib/server/db";
+import { db } from '$lib/server/db';
 import {
 	auditLogEntry,
 	exam,
@@ -19,13 +19,13 @@ export const load: PageServerLoad = async ({ cookies, params }) => {
 		where: eq(exam.id, Number.parseInt(params.examId)),
 		with: {
 			attempts: {
-				where: ((attempt, { eq }) => eq(attempt.userId, session.user.id))
+				where: (attempt, { eq }) => eq(attempt.userId, session.user.id)
 			}
 		}
 	});
 
 	if (!thisExam) {
-		redirect(301, "/select/selfadmitted");
+		redirect(301, '/select/selfadmitted');
 	}
 
 	const examQuestions = await db.query.examAvailableQuestion.findMany({
@@ -38,8 +38,8 @@ export const load: PageServerLoad = async ({ cookies, params }) => {
 		user: session.user,
 		thisExam,
 		numberOfQuestions
-	}
-}
+	};
+};
 
 export const actions: Actions = {
 	default: async ({ cookies, params }) => {
@@ -49,22 +49,23 @@ export const actions: Actions = {
 			where: eq(exam.id, Number.parseInt(params.examId)),
 			with: {
 				attempts: {
-					where: ((attempt, { eq }) => eq(attempt.userId, session.user.id))
+					where: (attempt, { eq }) => eq(attempt.userId, session.user.id)
 				}
 			}
 		});
 
 		if (!thisExam) {
-			redirect(301, "/select/selfadmitted");
+			redirect(301, '/select/selfadmitted');
 		}
 
 		const ticketCode = generateExamTicket();
 
-		const data = await db.insert(examTicket)
+		const data = await db
+			.insert(examTicket)
 			.values({
 				ticket: ticketCode,
 				timestamp: Math.floor(new Date().getTime() / 1000),
-				validUntil: Math.floor((new Date().getTime() / 1000) + thisExam.examTimeAlotted!),
+				validUntil: Math.floor(new Date().getTime() / 1000 + thisExam.examTimeAlotted!),
 				examId: thisExam.id,
 				studentId: session.user.id,
 				issuerId: session.user.id,
@@ -72,15 +73,14 @@ export const actions: Actions = {
 			})
 			.returning();
 
-		await db.insert(auditLogEntry)
-			.values({
-				timestamp: currentTimestamp(),
-				userId: session.user.id,
-				action: `Self-admitted to ${thisExam.name} with ticket ${data[0].ticket}`,
-				data,
-				facilityId: thisExam.facilityId
-			});
+		await db.insert(auditLogEntry).values({
+			timestamp: currentTimestamp(),
+			userId: session.user.id,
+			action: `Self-admitted to ${thisExam.name} with ticket ${data[0].ticket}`,
+			data,
+			facilityId: thisExam.facilityId
+		});
 
 		redirect(301, `/select/ticket/start/${ticketCode}`);
 	}
-}
+};

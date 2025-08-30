@@ -24,10 +24,10 @@ export const load: PageServerLoad = async ({ cookies }) => {
 				ticketId: u.ticketId,
 				isSubmitted: u.isSubmitted,
 				isPending: u.hasPendingGrade,
-				isPassed: (u.points / u.pointsAvailable) >= 0.8,
+				isPassed: u.points / u.pointsAvailable >= 0.8,
 				exam: u.exam,
 				startTime: u.startedAt
-			}
+			};
 		})
-	}
-}
+	};
+};

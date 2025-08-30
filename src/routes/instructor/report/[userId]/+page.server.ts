@@ -10,9 +10,7 @@ export const load: PageServerLoad = async ({ cookies, params }) => {
 	const session = await requireRole(requireAuth(cookies), ROLE_INSTRUCTOR);
 
 	const ufPastExams = await db.query.examAdministration.findMany({
-		where: and(
-			eq(examAdministration.userId, Number.parseInt(params.userId)),
-		),
+		where: and(eq(examAdministration.userId, Number.parseInt(params.userId))),
 		with: {
 			exam: true
 		}
@@ -27,7 +25,7 @@ export const load: PageServerLoad = async ({ cookies, params }) => {
 		student,
 		pastExams: ufPastExams
 			.filter((u) => {
-				return session.metRoleIn.includes(u.exam.facilityId)
+				return session.metRoleIn.includes(u.exam.facilityId);
 			})
 			.map((u) => {
 				return {
@@ -35,10 +33,10 @@ export const load: PageServerLoad = async ({ cookies, params }) => {
 					ticketId: u.ticketId,
 					isSubmitted: u.isSubmitted,
 					isPending: u.hasPendingGrade,
-					isPassed: (u.points / u.pointsAvailable) >= 0.8,
+					isPassed: u.points / u.pointsAvailable >= 0.8,
 					exam: u.exam,
 					startTime: u.startedAt
-				}
-		})
-	}
-}
+				};
+			})
+	};
+};

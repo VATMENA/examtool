@@ -1,10 +1,10 @@
 <script lang="ts">
-	import * as Card from "$lib/components/ui/card";
-	import * as Alert from "$lib/components/ui/alert";
-	import { Button } from "$lib/components/ui/button";
+	import * as Card from '$lib/components/ui/card';
+	import * as Alert from '$lib/components/ui/alert';
+	import { Button } from '$lib/components/ui/button';
 	import type { PageProps } from './$types';
-	import CheckCircle2Icon from "@lucide/svelte/icons/check-circle-2";
-	import AlertCircleIcon from "@lucide/svelte/icons/alert-circle";
+	import CheckCircle2Icon from '@lucide/svelte/icons/check-circle-2';
+	import AlertCircleIcon from '@lucide/svelte/icons/alert-circle';
 
 	const { data }: PageProps = $props();
 </script>
@@ -22,7 +22,9 @@
 					<Alert.Title>Success!</Alert.Title>
 					<Alert.Description>You will be redirected shortly.</Alert.Description>
 				</Alert.Root>
-				<Button href="/select" variant="outline" class="w-full">Click here if the page doesn't load</Button>
+				<Button href="/select" variant="outline" class="w-full"
+					>Click here if the page doesn't load</Button
+				>
 			{:else}
 				<Alert.Root variant="destructive">
 					<AlertCircleIcon />

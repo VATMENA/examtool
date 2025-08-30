@@ -12,5 +12,5 @@ export const load: PageServerLoad = async ({ cookies }) => {
 	return {
 		user: session.user,
 		rolesIn: session.metRoleIn
-	}
-}
+	};
+};

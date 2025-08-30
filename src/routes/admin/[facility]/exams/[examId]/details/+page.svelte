@@ -1,7 +1,7 @@
 <script lang="ts">
-	import * as Form from "$lib/components/ui/form";
+	import * as Form from '$lib/components/ui/form';
 	import { examSchema, type ExamSchema } from '../../examSchema';
-	import type { PageProps } from "./$types";
+	import type { PageProps } from './$types';
 	import { superForm } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
 	import { Input } from '$lib/components/ui/input';
@@ -48,7 +48,7 @@
 	</Form.Field>
 	<Form.Field {form} name="isRestricted" class="flex flex-row items-top justify-between">
 		<Form.Control>
-			{#snippet children({props})}
+			{#snippet children({ props })}
 				<Form.Label>Require instructor recommendation?</Form.Label>
 				<Switch {...props} class="mt-1" bind:checked={$formData.isRestricted} />
 			{/snippet}
@@ -85,10 +85,6 @@
 		</Form.Field>
 	</div>
 
-	<Form.Button>
-		Update
-	</Form.Button>
-	<Button variant="secondary" href="/admin/{page.params.facility}/exams">
-		Nevermind
-	</Button>
+	<Form.Button>Update</Form.Button>
+	<Button variant="secondary" href="/admin/{page.params.facility}/exams">Nevermind</Button>
 </form>

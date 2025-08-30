@@ -6,6 +6,6 @@ export const load: PageServerLoad = async ({ cookies }) => {
 	const session = await requireRole(requireAuth(cookies), ROLE_STUDENT, true);
 
 	return {
-		user: session.user,
-	}
-}
+		user: session.user
+	};
+};

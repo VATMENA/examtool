@@ -1,19 +1,19 @@
-import type { ColumnDef } from "@tanstack/table-core";
+import type { ColumnDef } from '@tanstack/table-core';
 import type { exam, examAvailableQuestion } from '$lib/server/db/schema';
 import { renderComponent } from '$lib/components/ui/data-table';
 import { questionTypes } from './questionSchema';
 import type { MultipleChoiceQuestion, Question as SQuestion } from '$lib/question';
-import DataTableActions from "./data-table-actions.svelte";
+import DataTableActions from './data-table-actions.svelte';
 
 export type Question = typeof examAvailableQuestion.$inferSelect;
 
 export const columns: ColumnDef<Question>[] = [
 	{
-		header: "Question ID",
-		accessorKey: 'id',
+		header: 'Question ID',
+		accessorKey: 'id'
 	},
 	{
-		header: "Question Type",
+		header: 'Question Type',
 		cell: ({ row }) => {
 			const q: SQuestion = row.original.questionData as SQuestion;
 			// @ts-expect-error it's fine
@@ -21,21 +21,24 @@ export const columns: ColumnDef<Question>[] = [
 		}
 	},
 	{
-		header: "Question Summary",
+		header: 'Question Summary',
 		cell: ({ row }) => {
 			const q: SQuestion = row.original.questionData as SQuestion;
-			if (q.type === "multiple-choice") {
+			if (q.type === 'multiple-choice') {
 				const q2: MultipleChoiceQuestion = q as MultipleChoiceQuestion;
 				return q2.question;
 			} else {
-				return "Unknown";
+				return 'Unknown';
 			}
 		}
 	},
 	{
-		header: "Actions",
+		header: 'Actions',
 		cell: ({ row }) => {
-			return renderComponent(DataTableActions, { examId: row.original.examId, questionId: row.original.id });
+			return renderComponent(DataTableActions, {
+				examId: row.original.examId,
+				questionId: row.original.id
+			});
 		}
 	}
-]
+];

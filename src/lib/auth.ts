@@ -9,14 +9,14 @@ const sessionExpiresInSeconds = 60 * 60 * 24;
 
 export function generateSecureRandomString(): string {
 	// Human readable alphabet (a-z, 0-9 without l, o, 0, 1 to avoid confusion)
-	const alphabet = "abcdefghijkmnpqrstuvwxyz23456789";
+	const alphabet = 'abcdefghijkmnpqrstuvwxyz23456789';
 
 	// Generate 24 bytes = 192 bits of entropy.
 	// We're only going to use 5 bits per byte so the total entropy will be 192 * 5 / 8 = 120 bits
 	const bytes = new Uint8Array(24);
 	crypto.getRandomValues(bytes);
 
-	let id = "";
+	let id = '';
 	for (let i = 0; i < bytes.length; i++) {
 		// >> 3 "removes" the right-most 3 bits of the byte
 		id += alphabet[bytes[i] >> 3];
@@ -25,12 +25,12 @@ export function generateSecureRandomString(): string {
 }
 
 export function generateExamTicket(): string {
-	const alphabet = "abcdefghijkmnpqrstuvwxyz23456789";
+	const alphabet = 'abcdefghijkmnpqrstuvwxyz23456789';
 
 	const bytes = new Uint8Array(6);
 	crypto.getRandomValues(bytes);
 
-	let id = "";
+	let id = '';
 	for (let i = 0; i < bytes.length; i++) {
 		// >> 3 "removes" the right-most 3 bits of the byte
 		id += alphabet[bytes[i] >> 3];
@@ -45,7 +45,7 @@ export async function createSession(userId: number): Promise<SessionWithToken> {
 	const secret = generateSecureRandomString();
 	const secretHash = await hashSecret(secret);
 
-	const token = id + "." + secret;
+	const token = id + '.' + secret;
 
 	const session: SessionWithToken = {
 		id,
@@ -55,20 +55,18 @@ export async function createSession(userId: number): Promise<SessionWithToken> {
 		userId
 	};
 
-	await db.insert(tSession)
-		.values({
-			id: session.id,
-			secretHash: bytesToBase64(session.secretHash),
-			createdAt: Math.floor(session.createdAt.getTime() / 1000),
-			userId: session.userId,
-		});
-
+	await db.insert(tSession).values({
+		id: session.id,
+		secretHash: bytesToBase64(session.secretHash),
+		createdAt: Math.floor(session.createdAt.getTime() / 1000),
+		userId: session.userId
+	});
 
 	return session;
 }
 
 async function validateSessionToken(token: string): Promise<Session | null> {
-	const tokenParts = token.split(".");
+	const tokenParts = token.split('.');
 	if (tokenParts.length !== 2) {
 		return null;
 	}
@@ -92,10 +90,7 @@ async function validateSessionToken(token: string): Promise<Session | null> {
 async function getSession(sessionId: string): Promise<Session | null> {
 	const now = new Date();
 
-
-	const result = await db.select()
-		.from(tSession)
-		.where(eq(tSession.id, sessionId));
+	const result = await db.select().from(tSession).where(eq(tSession.id, sessionId));
 
 	if (result.length !== 1) {
 		return null;
@@ -107,7 +102,7 @@ async function getSession(sessionId: string): Promise<Session | null> {
 		id: row.id,
 		secretHash: base64ToBytes(row.secretHash),
 		createdAt: new Date(row.createdAt * 1000),
-		userId: row.userId,
+		userId: row.userId
 	};
 
 	// Check expiration
@@ -120,8 +115,7 @@ async function getSession(sessionId: string): Promise<Session | null> {
 }
 
 async function deleteSession(sessionId: string): Promise<void> {
-	await db.delete(tSession)
-		.where(eq(tSession.id, sessionId));
+	await db.delete(tSession).where(eq(tSession.id, sessionId));
 }
 
 function constantTimeEqual(a: Uint8Array, b: Uint8Array): boolean {
@@ -135,10 +129,9 @@ function constantTimeEqual(a: Uint8Array, b: Uint8Array): boolean {
 	return c === 0;
 }
 
-
 export async function hashSecret(secret: string): Promise<Uint8Array> {
 	const secretBytes = new TextEncoder().encode(secret);
-	const secretHashBuffer = await crypto.subtle.digest("SHA-256", secretBytes);
+	const secretHashBuffer = await crypto.subtle.digest('SHA-256', secretBytes);
 	return new Uint8Array(secretHashBuffer);
 }
 
@@ -153,11 +146,14 @@ export interface Session {
 	userId: number;
 }
 
-export async function checkAuth(cookies: Cookies, required: boolean = true): Promise<Session | null> {
+export async function checkAuth(
+	cookies: Cookies,
+	required: boolean = true
+): Promise<Session | null> {
 	const token = cookies.get('examtool-token');
 	if (!token) {
 		if (required) {
-			redirect(301, "/");
+			redirect(301, '/');
 		}
 		return null;
 	}
@@ -165,7 +161,7 @@ export async function checkAuth(cookies: Cookies, required: boolean = true): Pro
 	const session = await validateSessionToken(token);
 	if (!session) {
 		if (required) {
-			redirect(301, "/");
+			redirect(301, '/');
 		}
 	}
 
@@ -174,7 +170,7 @@ export async function checkAuth(cookies: Cookies, required: boolean = true): Pro
 export async function requireAuth(cookies: Cookies): Promise<AuthenticatedSession> {
 	const session = await checkAuth(cookies, true);
 	if (!session) {
-		redirect(301, "/");
+		redirect(301, '/');
 	}
 
 	const userAndRoles = await db.query.user.findFirst({
@@ -186,7 +182,7 @@ export async function requireAuth(cookies: Cookies): Promise<AuthenticatedSessio
 
 	if (!userAndRoles) {
 		await deleteSession(session.id);
-		redirect(301, "/");
+		redirect(301, '/');
 	}
 
 	return {
@@ -194,7 +190,11 @@ export async function requireAuth(cookies: Cookies): Promise<AuthenticatedSessio
 		...session
 	};
 }
-export async function requireRole(session: Promise<AuthenticatedSession>, requiredRole: number, requireAnyRole: boolean = true): Promise<RoleAuthenticatedSession> {
+export async function requireRole(
+	session: Promise<AuthenticatedSession>,
+	requiredRole: number,
+	requireAnyRole: boolean = true
+): Promise<RoleAuthenticatedSession> {
 	const aSession = await session;
 
 	const metRoleIn = [];
@@ -206,7 +206,7 @@ export async function requireRole(session: Promise<AuthenticatedSession>, requir
 	}
 
 	if (metRoleIn.length == 0 && requireAnyRole) {
-		redirect(301, "/select");
+		redirect(301, '/select');
 	}
 
 	return {
@@ -216,10 +216,10 @@ export async function requireRole(session: Promise<AuthenticatedSession>, requir
 }
 
 export interface AuthenticatedSession extends Session {
-	user: typeof tUser.$inferSelect & { facilityRole: typeof facilityRole.$inferSelect[] };
+	user: typeof tUser.$inferSelect & { facilityRole: (typeof facilityRole.$inferSelect)[] };
 }
 export interface RoleAuthenticatedSession extends AuthenticatedSession {
-	metRoleIn: string[]
+	metRoleIn: string[];
 }
 
 export function currentTimestamp(): number {

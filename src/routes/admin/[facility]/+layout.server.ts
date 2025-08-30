@@ -8,12 +8,12 @@ export const load: PageServerLoad = async ({ cookies, params }) => {
 	const session = await requireRole(requireAuth(cookies), ROLE_ADMIN);
 
 	if (!session.metRoleIn.includes(params.facility)) {
-		redirect(301, "/select");
+		redirect(301, '/select');
 	}
 
 	return {
 		availableFacilities: session.metRoleIn.map((u) => facilities[u]),
 		currentFacility: facilities[params.facility],
 		cfId: params.facility
-	}
-}
+	};
+};

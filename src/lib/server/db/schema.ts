@@ -4,28 +4,34 @@ import { relations } from 'drizzle-orm';
 export const user = pgTable('user', {
 	id: integer('id').primaryKey(),
 	name_first: varchar('name_first').notNull(),
-	name_last: varchar('name_last').notNull(),
+	name_last: varchar('name_last').notNull()
 });
 
 export const userRelations = relations(user, ({ many }) => ({
-	facilityRole: many(facilityRole),
+	facilityRole: many(facilityRole)
 }));
 
 export const session = pgTable('session', {
 	id: varchar('id').primaryKey(),
 	secretHash: varchar('secretHash').notNull(),
 	createdAt: integer('createdAt').notNull(),
-	userId: integer('userId').references(() => user.id).notNull(),
+	userId: integer('userId')
+		.references(() => user.id)
+		.notNull()
 });
 
-export const facilityRole = pgTable('facilityRole', {
-	id: serial('id').primaryKey(),
-	userId: integer('userId').references(() => user.id).notNull(),
-	facilityId: varchar('facilityId').notNull(),
-	role: integer('role').notNull().default(0),
-}, (t) => [
-	unique().on(t.userId, t.facilityId)
-]);
+export const facilityRole = pgTable(
+	'facilityRole',
+	{
+		id: serial('id').primaryKey(),
+		userId: integer('userId')
+			.references(() => user.id)
+			.notNull(),
+		facilityId: varchar('facilityId').notNull(),
+		role: integer('role').notNull().default(0)
+	},
+	(t) => [unique().on(t.userId, t.facilityId)]
+);
 
 export const facilityRoleRelations = relations(facilityRole, ({ one }) => ({
 	user: one(user, {
@@ -46,7 +52,7 @@ export const exam = pgTable('exam', {
 
 	examTimeAlotted: integer('examTimeAlotted'),
 
-	examQuestionCount: integer('examQuestionCount').notNull(),
+	examQuestionCount: integer('examQuestionCount').notNull()
 });
 
 export const examRelations = relations(exam, ({ many }) => ({
@@ -56,8 +62,10 @@ export const examRelations = relations(exam, ({ many }) => ({
 
 export const examAvailableQuestion = pgTable('examAvailableQuestion', {
 	id: serial('id').primaryKey(),
-	examId: integer('examId').references(() => exam.id).notNull(),
-	questionData: json('questionData').notNull(),
+	examId: integer('examId')
+		.references(() => exam.id)
+		.notNull(),
+	questionData: json('questionData').notNull()
 });
 
 export const examAvailableQuestionRelations = relations(examAvailableQuestion, ({ one }) => ({
@@ -73,14 +81,18 @@ export const auditLogEntry = pgTable('auditLogEntry', {
 	userId: integer('userId').notNull(),
 	action: varchar('action').notNull(),
 	data: json('data').notNull(),
-	facilityId: varchar('facilityId').notNull(),
+	facilityId: varchar('facilityId').notNull()
 });
 
 export const examAdministration = pgTable('examAdministration', {
 	id: serial('id').primaryKey(),
 
-	examId: integer('examId').references(() => exam.id).notNull(),
-	userId: integer('userId').references(() => user.id).notNull(),
+	examId: integer('examId')
+		.references(() => exam.id)
+		.notNull(),
+	userId: integer('userId')
+		.references(() => user.id)
+		.notNull(),
 
 	examData: json('examData').notNull(),
 
@@ -92,39 +104,46 @@ export const examAdministration = pgTable('examAdministration', {
 	points: integer('points').notNull(),
 	pointsAvailable: integer('pointsAvailable').notNull(),
 
-	ticketId: integer('ticketId').notNull().references(() => examTicket.id).notNull(),
+	ticketId: integer('ticketId')
+		.notNull()
+		.references(() => examTicket.id)
+		.notNull(),
 
-	hasPendingGrade: boolean('hasPendingGrade').notNull().default(true),
+	hasPendingGrade: boolean('hasPendingGrade').notNull().default(true)
 });
-export const examAdministrationAnswer = pgTable('examAdministrationAnswer', {
-	id: serial('id').primaryKey(),
+export const examAdministrationAnswer = pgTable(
+	'examAdministrationAnswer',
+	{
+		id: serial('id').primaryKey(),
 
-	examAdministrationId: integer('examAdministrationId').references(() => examAdministration.id).notNull(),
-	questionId: integer('questionId').notNull(),
+		examAdministrationId: integer('examAdministrationId')
+			.references(() => examAdministration.id)
+			.notNull(),
+		questionId: integer('questionId').notNull(),
 
-	answer: json('answer').notNull(),
+		answer: json('answer').notNull(),
 
-	isGraded: boolean('isGraded').notNull(),
-	requiresManualGrading: boolean('requiresManualGrading').notNull(),
+		isGraded: boolean('isGraded').notNull(),
+		requiresManualGrading: boolean('requiresManualGrading').notNull(),
 
-	pointsGiven: integer('pointsGiven').notNull(),
-	pointsPossible: integer('pointsPossible').notNull(),
-}, (t) => [
-	unique().on(t.examAdministrationId, t.questionId)
-]);
+		pointsGiven: integer('pointsGiven').notNull(),
+		pointsPossible: integer('pointsPossible').notNull()
+	},
+	(t) => [unique().on(t.examAdministrationId, t.questionId)]
+);
 
 export const examAdministrationRelations = relations(examAdministration, ({ one, many }) => ({
 	exam: one(exam, {
 		fields: [examAdministration.examId],
 		references: [exam.id]
 	}),
-	answers: many(examAdministrationAnswer),
+	answers: many(examAdministrationAnswer)
 }));
 export const examAdministrationAnswerRelations = relations(examAdministrationAnswer, ({ one }) => ({
 	examAdministration: one(examAdministration, {
 		fields: [examAdministrationAnswer.examAdministrationId],
 		references: [examAdministration.id]
-	}),
+	})
 }));
 
 export const examTicket = pgTable('examTicket', {
@@ -135,10 +154,16 @@ export const examTicket = pgTable('examTicket', {
 	timestamp: integer('timestamp').notNull(),
 	validUntil: integer('validUntil').notNull(),
 
-	examId: integer('examId').references(() => exam.id).notNull(),
+	examId: integer('examId')
+		.references(() => exam.id)
+		.notNull(),
 
-	studentId: integer('studentId').references(() => user.id).notNull(),
-	issuerId: integer('issuerId').references(() => user.id).notNull(),
+	studentId: integer('studentId')
+		.references(() => user.id)
+		.notNull(),
+	issuerId: integer('issuerId')
+		.references(() => user.id)
+		.notNull(),
 
-	valid: boolean('valid').notNull(),
+	valid: boolean('valid').notNull()
 });

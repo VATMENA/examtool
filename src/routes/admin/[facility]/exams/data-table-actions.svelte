@@ -3,10 +3,14 @@
 	import { page } from '$app/state';
 
 	interface Props {
-		id: string,
+		id: string;
 	}
 	let { id }: Props = $props();
 </script>
 
-<Button variant="outline" href="/admin/{page.params.facility}/exams/{id}/details">Edit Exam Details</Button>
-<Button variant="outline" href="/admin/{page.params.facility}/exams/{id}/questions">Edit Exam Questions</Button>
+<Button variant="outline" href="/admin/{page.params.facility}/exams/{id}/details"
+	>Edit Exam Details</Button
+>
+<Button variant="outline" href="/admin/{page.params.facility}/exams/{id}/questions"
+	>Edit Exam Questions</Button
+>

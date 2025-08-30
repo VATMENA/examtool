@@ -1,5 +1,5 @@
 export interface Question {
-	version: "v1";
+	version: 'v1';
 	type: string;
 	canBeAutomaticallyGraded: boolean;
 }
@@ -10,7 +10,7 @@ export interface AnsweredQuestion {
 
 // Multiple-choice
 export interface MultipleChoiceQuestion extends Question {
-	type: "multiple-choice";
+	type: 'multiple-choice';
 	question: string;
 	choices: MultipleChoiceAnswerOption[];
 	canBeAutomaticallyGraded: true;

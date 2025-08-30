@@ -1,13 +1,13 @@
 <script lang="ts">
-	import * as Card from "$lib/components/ui/card";
-	import { Button } from "$lib/components/ui/button";
+	import * as Card from '$lib/components/ui/card';
+	import { Button } from '$lib/components/ui/button';
 	import type { PageProps } from './$types';
-	import BookOpenCheckIcon from "@lucide/svelte/icons/book-open-check";
-	import TicketCheckIcon from "@lucide/svelte/icons/ticket-check";
-	import FileClockIcon from "@lucide/svelte/icons/file-clock";
-	import GraduationCapIcon from "@lucide/svelte/icons/graduation-cap";
-	import SquareKanbanIcon from "@lucide/svelte/icons/square-kanban";
-	import ClipboardListIcon from "@lucide/svelte/icons/clipboard-list";
+	import BookOpenCheckIcon from '@lucide/svelte/icons/book-open-check';
+	import TicketCheckIcon from '@lucide/svelte/icons/ticket-check';
+	import FileClockIcon from '@lucide/svelte/icons/file-clock';
+	import GraduationCapIcon from '@lucide/svelte/icons/graduation-cap';
+	import SquareKanbanIcon from '@lucide/svelte/icons/square-kanban';
+	import ClipboardListIcon from '@lucide/svelte/icons/clipboard-list';
 	import ArrowLeftIcon from '@lucide/svelte/icons/arrow-left';
 	import { Separator } from '$lib/components/ui/separator';
 	import { facilities } from '$lib/facilities';
@@ -19,7 +19,9 @@
 	<Card.Root class="mx-auto w-full max-w-sm">
 		<Card.Header>
 			<Card.Title class="text-2xl text-center">Instructor Dashboard</Card.Title>
-			<Card.Description class="text-center">Instructor for {data.rolesIn.map((u) => facilities[u]).join(", ")} exams</Card.Description>
+			<Card.Description class="text-center"
+				>Instructor for {data.rolesIn.map((u) => facilities[u]).join(', ')} exams</Card.Description
+			>
 		</Card.Header>
 		<Card.Content class="flex flex-col gap-4">
 			<div class="flex flex-col gap-1">

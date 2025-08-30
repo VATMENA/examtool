@@ -1,6 +1,6 @@
 import { currentTimestamp, requireAuth, requireRole } from '$lib/auth';
 import { redirect } from '@sveltejs/kit';
-import type { PageServerLoad, Actions } from "./$types";
+import type { PageServerLoad, Actions } from './$types';
 import { ROLE_STUDENT } from '$lib/authShared';
 import { and, eq } from 'drizzle-orm';
 import {
@@ -22,32 +22,42 @@ export const load: PageServerLoad = async ({ cookies, params }) => {
 			exam: true
 		}
 	});
-	if (!thisExamAdministration) { console.log("no exam, redirecting"); redirect(301, "/select"); }
+	if (!thisExamAdministration) {
+		console.log('no exam, redirecting');
+		redirect(301, '/select');
+	}
 
 	const thisExamTicket = await db.query.examTicket.findFirst({
 		where: eq(examTicket.id, params.ticketId)
 	});
-	if (!thisExamTicket) { console.log("no exam ticket, redirecting"); redirect(301, "/select"); }
+	if (!thisExamTicket) {
+		console.log('no exam ticket, redirecting');
+		redirect(301, '/select');
+	}
 
 	if (thisExamTicket.valid) {
-		console.log("non-redeemed exam ticket");
-		redirect(301, "/select");
+		console.log('non-redeemed exam ticket');
+		redirect(301, '/select');
 	}
 	if (thisExamTicket.studentId != session.user.id) {
-		console.log("student mismatch");
-		redirect(301, "/select");
+		console.log('student mismatch');
+		redirect(301, '/select');
 	}
 	if (thisExamTicket.validUntil < currentTimestamp()) {
-		console.log("ticket expired");
-		redirect(301, "/select");
+		console.log('ticket expired');
+		redirect(301, '/select');
 	}
 
-	if (thisExamAdministration.timeExpiresAt < currentTimestamp() || thisExamAdministration.isSubmitted) {
-		console.log("administration concluded");
+	if (
+		thisExamAdministration.timeExpiresAt < currentTimestamp() ||
+		thisExamAdministration.isSubmitted
+	) {
+		console.log('administration concluded');
 		redirect(301, `/exam/complete/${thisExamAdministration.id}`);
 	}
 
-	const examQuestions: typeof examAvailableQuestion.$inferSelect[] = thisExamAdministration.examData as typeof examAvailableQuestion.$inferSelect[];
+	const examQuestions: (typeof examAvailableQuestion.$inferSelect)[] =
+		thisExamAdministration.examData as (typeof examAvailableQuestion.$inferSelect)[];
 
 	return {
 		exam: thisExamAdministration.exam,
@@ -56,6 +66,6 @@ export const load: PageServerLoad = async ({ cookies, params }) => {
 		totalQuestions: examQuestions.length,
 
 		ticketId: thisExamTicket.id,
-		administrationId: thisExamAdministration.id,
-	}
-}
+		administrationId: thisExamAdministration.id
+	};
+};

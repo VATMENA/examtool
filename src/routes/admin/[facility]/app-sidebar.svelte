@@ -1,13 +1,13 @@
 <script lang="ts">
-	import * as Sidebar from "$lib/components/ui/sidebar";
-	import * as DropdownMenu from "$lib/components/ui/dropdown-menu";
-	import FacilitySelector from "./facility-selector.svelte";
+	import * as Sidebar from '$lib/components/ui/sidebar';
+	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
+	import FacilitySelector from './facility-selector.svelte';
 	import { page } from '$app/state';
 
 	interface Props {
-		availableFacilities: string[],
-		currentFacility: string,
-		cfId: string
+		availableFacilities: string[];
+		currentFacility: string;
+		cfId: string;
 	}
 	const { availableFacilities, currentFacility, cfId }: Props = $props();
 </script>
@@ -21,7 +21,6 @@
 			<Sidebar.GroupLabel>Facility Exams</Sidebar.GroupLabel>
 			<Sidebar.GroupContent>
 				<Sidebar.Menu>
-
 					<Sidebar.MenuItem>
 						<Sidebar.MenuButton isActive={page.url.pathname.startsWith(`/admin/${cfId}/exams`)}>
 							{#snippet child({ props })}
@@ -29,7 +28,6 @@
 							{/snippet}
 						</Sidebar.MenuButton>
 					</Sidebar.MenuItem>
-
 				</Sidebar.Menu>
 			</Sidebar.GroupContent>
 		</Sidebar.Group>
@@ -100,7 +98,6 @@
 				</Sidebar.Menu>
 			</Sidebar.GroupContent>
 		</Sidebar.Group>
-
 	</Sidebar.Content>
 	<Sidebar.Rail />
 </Sidebar.Root>

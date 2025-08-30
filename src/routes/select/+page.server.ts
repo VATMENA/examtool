@@ -9,17 +9,24 @@ import { redirect } from '@sveltejs/kit';
 export const load: PageServerLoad = async ({ cookies }) => {
 	const session = await requireRole(requireAuth(cookies), ROLE_STUDENT, false);
 
-	const hasInstructorAnywhereRoleset = await requireRole(requireAuth(cookies), ROLE_INSTRUCTOR, false);
+	const hasInstructorAnywhereRoleset = await requireRole(
+		requireAuth(cookies),
+		ROLE_INSTRUCTOR,
+		false
+	);
 	const hasAdminAnywhereRoleset = await requireRole(requireAuth(cookies), ROLE_ADMIN, false);
 
 	// does this user have an active exam administration
-	const activeExam = await db.select()
+	const activeExam = await db
+		.select()
 		.from(examAdministration)
-		.where(and(
-			eq(examAdministration.userId, session.user.id),
-			gt(examAdministration.timeExpiresAt, currentTimestamp()),
-			not(eq(examAdministration.isSubmitted, true))
-		));
+		.where(
+			and(
+				eq(examAdministration.userId, session.user.id),
+				gt(examAdministration.timeExpiresAt, currentTimestamp()),
+				not(eq(examAdministration.isSubmitted, true))
+			)
+		);
 
 	if (activeExam.length !== 0) {
 		const aInfo = activeExam[0];
@@ -28,7 +35,11 @@ export const load: PageServerLoad = async ({ cookies }) => {
 
 	return {
 		user: session.user,
-		instructorIn: hasInstructorAnywhereRoleset.metRoleIn.length !== 0 ? hasAdminAnywhereRoleset.metRoleIn[0] : null,
-		adminIn: hasAdminAnywhereRoleset.metRoleIn.length !== 0 ? hasAdminAnywhereRoleset.metRoleIn[0] : null,
-	}
-}
+		instructorIn:
+			hasInstructorAnywhereRoleset.metRoleIn.length !== 0
+				? hasAdminAnywhereRoleset.metRoleIn[0]
+				: null,
+		adminIn:
+			hasAdminAnywhereRoleset.metRoleIn.length !== 0 ? hasAdminAnywhereRoleset.metRoleIn[0] : null
+	};
+};

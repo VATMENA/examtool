@@ -1,4 +1,4 @@
-import type { PageServerLoad, Actions } from "./$types";
+import type { PageServerLoad, Actions } from './$types';
 import { currentTimestamp, requireAuth, requireRole } from '$lib/auth';
 import { ROLE_ADMIN } from '$lib/authShared';
 import { fail, redirect } from '@sveltejs/kit';
@@ -12,17 +12,19 @@ import { eq } from 'drizzle-orm';
 
 export const load: PageServerLoad = async ({ cookies, params }) => {
 	const session = await requireRole(requireAuth(cookies), ROLE_ADMIN);
-	if (!session.metRoleIn.includes(params.facility)) { redirect(301, "/select"); }
+	if (!session.metRoleIn.includes(params.facility)) {
+		redirect(301, '/select');
+	}
 
 	const thisExam = await db.query.exam.findFirst({
-		where: eq(exam.id, Number.parseInt(params.examId)),
+		where: eq(exam.id, Number.parseInt(params.examId))
 	});
 
 	return {
 		form: await superValidate(zod(questionSchema)),
 		thisExam
-	}
-}
+	};
+};
 
 export const actions: Actions = {
 	default: async (event) => {
@@ -32,14 +34,16 @@ export const actions: Actions = {
 		}
 
 		const session = await requireRole(requireAuth(event.cookies), ROLE_ADMIN);
-		if (!session.metRoleIn.includes(event.params.facility)) { redirect(301, "/select"); }
+		if (!session.metRoleIn.includes(event.params.facility)) {
+			redirect(301, '/select');
+		}
 
 		// Assemble the question
 		let question: Question;
-		if (form.data.type === "multiple-choice") {
+		if (form.data.type === 'multiple-choice') {
 			const mcq: MultipleChoiceQuestion = {
-				type: "multiple-choice",
-				version: "v1",
+				type: 'multiple-choice',
+				version: 'v1',
 				canBeAutomaticallyGraded: true,
 				question: form.data.question,
 				choices: form.data.choices
@@ -50,7 +54,8 @@ export const actions: Actions = {
 		}
 		const question_data = JSON.stringify(question);
 
-		const created_question = await db.insert(examAvailableQuestion)
+		const created_question = await db
+			.insert(examAvailableQuestion)
 			.values({
 				examId: Number.parseInt(event.params.examId),
 				questionData: question_data
@@ -59,15 +64,14 @@ export const actions: Actions = {
 
 		console.log(created_question);
 
-		await db.insert(auditLogEntry)
-			.values({
-				timestamp: currentTimestamp(),
-				userId: session.user.id,
-				action: `Created new exam question #${created_question[0].id}`,
-				data: question_data,
-				facilityId: event.params.facility
-			});
+		await db.insert(auditLogEntry).values({
+			timestamp: currentTimestamp(),
+			userId: session.user.id,
+			action: `Created new exam question #${created_question[0].id}`,
+			data: question_data,
+			facilityId: event.params.facility
+		});
 
 		return { form };
 	}
-}
+};

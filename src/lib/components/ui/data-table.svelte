@@ -1,10 +1,7 @@
 <script lang="ts" generics="TData, TValue">
-	import { type ColumnDef, getCoreRowModel } from "@tanstack/table-core";
-	import {
-		createSvelteTable,
-		FlexRender,
-	} from "$lib/components/ui/data-table/index.js";
-	import * as Table from "$lib/components/ui/table/index.js";
+	import { type ColumnDef, getCoreRowModel } from '@tanstack/table-core';
+	import { createSvelteTable, FlexRender } from '$lib/components/ui/data-table/index.js';
+	import * as Table from '$lib/components/ui/table/index.js';
 
 	type DataTableProps<TData, TValue> = {
 		columns: ColumnDef<TData, TValue>[];
@@ -18,7 +15,7 @@
 			return data;
 		},
 		columns,
-		getCoreRowModel: getCoreRowModel(),
+		getCoreRowModel: getCoreRowModel()
 	});
 </script>
 
@@ -42,21 +39,16 @@
 		</Table.Header>
 		<Table.Body>
 			{#each table.getRowModel().rows as row (row.id)}
-				<Table.Row data-state={row.getIsSelected() && "selected"}>
+				<Table.Row data-state={row.getIsSelected() && 'selected'}>
 					{#each row.getVisibleCells() as cell (cell.id)}
 						<Table.Cell>
-							<FlexRender
-								content={cell.column.columnDef.cell}
-								context={cell.getContext()}
-							/>
+							<FlexRender content={cell.column.columnDef.cell} context={cell.getContext()} />
 						</Table.Cell>
 					{/each}
 				</Table.Row>
 			{:else}
 				<Table.Row>
-					<Table.Cell colspan={columns.length} class="h-24 text-center">
-						No results.
-					</Table.Cell>
+					<Table.Cell colspan={columns.length} class="h-24 text-center">No results.</Table.Cell>
 				</Table.Row>
 			{/each}
 		</Table.Body>

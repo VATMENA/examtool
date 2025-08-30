@@ -1,15 +1,16 @@
 <script lang="ts">
-	import * as DropdownMenu from "$lib/components/ui/dropdown-menu/index.js";
-	import * as Sidebar from "$lib/components/ui/sidebar/index.js";
-	import CheckIcon from "@lucide/svelte/icons/check";
-	import ChevronsUpDownIcon from "@lucide/svelte/icons/chevrons-up-down";
-	import GalleryVerticalEndIcon from "@lucide/svelte/icons/gallery-vertical-end";
+	import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
+	import * as Sidebar from '$lib/components/ui/sidebar/index.js';
+	import CheckIcon from '@lucide/svelte/icons/check';
+	import ChevronsUpDownIcon from '@lucide/svelte/icons/chevrons-up-down';
+	import GalleryVerticalEndIcon from '@lucide/svelte/icons/gallery-vertical-end';
 	import { goto } from '$app/navigation';
 	import { facilities as dFacilities } from '$lib/facilities';
 
 	let { facilities, defaultFacility }: { facilities: string[]; defaultFacility: string } = $props();
 	let selectedFacility = $state(defaultFacility);
 </script>
+
 <Sidebar.Menu>
 	<Sidebar.MenuItem>
 		<DropdownMenu.Root>
@@ -35,14 +36,16 @@
 			</DropdownMenu.Trigger>
 			<DropdownMenu.Content class="w-(--bits-dropdown-menu-anchor-width)" align="start">
 				{#each facilities as facility (facility)}
-					<DropdownMenu.Item onSelect={async () => {
-						selectedFacility = facility;
-						for (const [facilityId, facilityName] of Object.entries(dFacilities)) {
-							if (selectedFacility === facilityName) {
-								await goto(`/admin/${facilityId}/exams`);
+					<DropdownMenu.Item
+						onSelect={async () => {
+							selectedFacility = facility;
+							for (const [facilityId, facilityName] of Object.entries(dFacilities)) {
+								if (selectedFacility === facilityName) {
+									await goto(`/admin/${facilityId}/exams`);
+								}
 							}
-						}
-					}}>
+						}}
+					>
 						{facility}
 						{#if facility === selectedFacility}
 							<CheckIcon class="ml-auto" />

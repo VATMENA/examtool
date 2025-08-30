@@ -1,6 +1,6 @@
 <script lang="ts">
-	import * as Form from "$lib/components/ui/form";
-	import type { PageProps } from "./$types";
+	import * as Form from '$lib/components/ui/form';
+	import type { PageProps } from './$types';
 	import SuperDebug, { superForm } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
 	import { Input } from '$lib/components/ui/input';
@@ -8,7 +8,7 @@
 	import { goto, invalidateAll } from '$app/navigation';
 	import { page } from '$app/state';
 	import { questionSchema, questionTypes } from '../questionSchema';
-	import * as Select from "$lib/components/ui/select";
+	import * as Select from '$lib/components/ui/select';
 	import { Button } from '$lib/components/ui/button';
 	import CheckIcon from '@lucide/svelte/icons/check';
 	import TrashIcon from '@lucide/svelte/icons/trash';
@@ -18,7 +18,7 @@
 
 	const form = superForm(data.form, {
 		validators: zodClient(questionSchema),
-		dataType: "json",
+		dataType: 'json',
 		async onUpdated({ form }) {
 			if (form.valid) {
 				await goto(`/admin/${page.params.facility}/exams/${page.params.examId}/questions`);
@@ -31,7 +31,7 @@
 		await fetch('?/remove', {
 			method: 'POST',
 			headers: {
-				"Content-Type": "application/x-www-form-urlencoded"
+				'Content-Type': 'application/x-www-form-urlencoded'
 			}
 		});
 		await invalidateAll();
@@ -46,15 +46,9 @@
 		<Form.Control>
 			{#snippet children({ props })}
 				<Form.Label>Question Type</Form.Label>
-				<Select.Root
-					type="single"
-					bind:value={$formData.type}
-					name={props.name}
-				>
+				<Select.Root type="single" bind:value={$formData.type} name={props.name}>
 					<Select.Trigger {...props}>
-						{$formData.type
-							? questionTypes[$formData.type]
-							: "Select a question type"}
+						{$formData.type ? questionTypes[$formData.type] : 'Select a question type'}
 					</Select.Trigger>
 					<Select.Content>
 						{#each Object.entries(questionTypes) as [k, v] (k)}
@@ -68,7 +62,7 @@
 	</Form.Field>
 
 	<!-- Multiple Choice -->
-	{#if $formData.type === "multiple-choice"}
+	{#if $formData.type === 'multiple-choice'}
 		<Form.Field {form} name="question">
 			<Form.Control>
 				{#snippet children({ props })}
@@ -79,14 +73,20 @@
 			<Form.FieldErrors />
 		</Form.Field>
 
-		<Button variant="secondary" onclick={() => {$formData.choices.push({ text: "New answer choice", isCorrect: false }); $formData.choices = $formData.choices}}>New Answer Choice</Button>
+		<Button
+			variant="secondary"
+			onclick={() => {
+				$formData.choices.push({ text: 'New answer choice', isCorrect: false });
+				$formData.choices = $formData.choices;
+			}}>New Answer Choice</Button
+		>
 
 		{#each $formData.choices as choice, i (i)}
 			<div class="flex flex-row gap-2">
 				<Form.Field {form} name="choices[{i}].text">
 					<Form.Control>
-						{#snippet children({props})}
-							<Form.Label>Option {i+1}</Form.Label>
+						{#snippet children({ props })}
+							<Form.Label>Option {i + 1}</Form.Label>
 							<Input {...props} bind:value={choice.text} />
 						{/snippet}
 					</Form.Control>
@@ -100,15 +100,21 @@
 					</Form.Control>
 					<Form.FieldErrors />
 				</Form.Field>
-				<Button size="icon" onclick={() => {$formData.choices.splice(i, 1); $formData.choices = $formData.choices;}} variant="ghost" class="mt-5.5">
+				<Button
+					size="icon"
+					onclick={() => {
+						$formData.choices.splice(i, 1);
+						$formData.choices = $formData.choices;
+					}}
+					variant="ghost"
+					class="mt-5.5"
+				>
 					<TrashIcon />
 				</Button>
 			</div>
 		{/each}
 	{/if}
 
-	<Form.Button>
-		Update
-	</Form.Button>
+	<Form.Button>Update</Form.Button>
 	<Button onclick={remove} variant="destructive">Remove</Button>
 </form>
