@@ -10,7 +10,7 @@ import { facilityRole, user } from '$lib/server/db/schema';
 import { createSession } from '$lib/auth';
 import { redirect } from '@sveltejs/kit';
 import { facilities } from '$lib/facilities';
-import { eq } from 'drizzle-orm';
+import { and, eq } from 'drizzle-orm';
 import { ROLE_STUDENT } from '$lib/authShared';
 
 export const load: PageServerLoad = async ({ fetch, url, cookies }) => {
@@ -80,7 +80,6 @@ export const load: PageServerLoad = async ({ fetch, url, cookies }) => {
 		});
 
 	// update roles
-	await db.delete(facilityRole).where(eq(facilityRole.userId, user_data.data.cid));
 
 	if (
 		user_data.data.vatsim &&
