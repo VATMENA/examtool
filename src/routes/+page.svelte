@@ -9,7 +9,7 @@
 <div class="flex h-screen w-full items-center justify-center px-4">
 	<Card.Root class="mx-auto w-full max-w-sm">
 		<Card.Header>
-			<Card.Title class="text-2xl">Divisional Theoretical Exams</Card.Title>
+			<Card.Title class="text-2xl text-center">Divisional Theoretical Exams</Card.Title>
 			<Card.Description class="text-center">Log in to take written exams</Card.Description>
 		</Card.Header>
 		<Card.Content>
