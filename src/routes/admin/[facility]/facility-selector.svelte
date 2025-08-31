@@ -27,8 +27,8 @@
 							<GalleryVerticalEndIcon class="size-4" />
 						</div>
 						<div class="flex flex-col gap-0.5 leading-none">
-							<span class="font-semibold">Knowledge Tests</span>
 							<span class="">{selectedFacility}</span>
+							<span class="font-semibold">Theoretical Exams</span>
 						</div>
 						<ChevronsUpDownIcon class="ml-auto" />
 					</Sidebar.MenuButton>
