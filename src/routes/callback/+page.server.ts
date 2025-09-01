@@ -93,7 +93,7 @@ export const load: PageServerLoad = async ({ fetch, url, cookies }) => {
 				userId: user_data.data.cid,
 				facilityId: 'division',
 				role: ROLE_STUDENT
-			});
+			}).onConflictDoNothing();
 		}
 
 		if (user_data.data.vatsim.subdivision && user_data.data.vatsim.subdivision.id) {
@@ -104,7 +104,7 @@ export const load: PageServerLoad = async ({ fetch, url, cookies }) => {
 					userId: user_data.data.cid,
 					facilityId: subdivision_id,
 					role: ROLE_STUDENT
-				});
+				}).onConflictDoNothing();
 			}
 		}
 	}
