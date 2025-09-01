@@ -15,6 +15,8 @@
 <div class="flex h-screen w-full items-center justify-center px-4">
 	<Card.Root class="mx-auto w-full max-w-sm">
 		<Card.Header>
+			<img src="/Dark_Icon.png" alt="VATMENA Logo" class="dark:hidden block mx-auto h-24 w-24" />
+			<img src="/Light_Icon.png" alt="VATMENA Logo" class="hidden dark:block mx-auto h-24 w-24" />
 			<Card.Title class="text-2xl text-center">Hello, {data.user.name_first}</Card.Title>
 		</Card.Header>
 		<Card.Content class="flex flex-col gap-4">
