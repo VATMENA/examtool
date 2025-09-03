@@ -16,7 +16,7 @@ export const load: PageServerLoad = async ({ cookies, params }) => {
 		where: eq(exam.id, Number.parseInt(params.examId)),
 		with: {
 			questions: {
-				orderBy: (questions, { asc }) => [asc(questions.id)],
+				orderBy: (questions, { asc }) => [asc(questions.id)]
 			}
 		}
 	});

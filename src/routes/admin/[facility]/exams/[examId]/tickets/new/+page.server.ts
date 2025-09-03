@@ -5,9 +5,8 @@ import { fail, redirect } from '@sveltejs/kit';
 import { setError, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { db } from '$lib/server/db';
-import { auditLogEntry, exam, examAvailableQuestion, examTicket } from '$lib/server/db/schema';
+import { auditLogEntry, exam, examTicket } from '$lib/server/db/schema';
 import { ticketSchema } from '../ticketSchema';
-import type { MultipleChoiceQuestion, Question } from '$lib/question';
 import { eq } from 'drizzle-orm';
 
 export const load: PageServerLoad = async ({ cookies, params }) => {
@@ -39,11 +38,12 @@ export const actions: Actions = {
 		}
 
 		if (form.data.userId === session.user.id) {
-			setError(form, "userId", "You cannot issue yourself a ticket");
+			setError(form, 'userId', 'You cannot issue yourself a ticket');
 			return fail(400, { form });
 		}
 
-		const ticket = await db.insert(examTicket)
+		const ticket = await db
+			.insert(examTicket)
 			.values({
 				ticket: generateExamTicket(),
 				studentId: form.data.userId,

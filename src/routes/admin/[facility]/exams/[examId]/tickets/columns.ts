@@ -12,7 +12,7 @@ export const columns: ColumnDef<Ticket>[] = [
 	},
 	{
 		header: 'Student',
-		accessorKey: 'studentId',
+		accessorKey: 'studentId'
 	},
 	{
 		header: 'Issued By',
@@ -29,7 +29,7 @@ export const columns: ColumnDef<Ticket>[] = [
 		header: 'Actions',
 		cell: ({ row }) => {
 			return renderComponent(DataTableActions, {
-				ticketId: row.original.id,
+				ticketId: row.original.id
 			});
 		}
 	}

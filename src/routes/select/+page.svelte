@@ -35,7 +35,10 @@
 					</Button>
 				</div>
 			{:else}
-				<p class="text-muted-foreground text-center">You are not a student in any facility. If you think this is in error, please contact the ATC Training Department.</p>
+				<p class="text-muted-foreground text-center">
+					You are not a student in any facility. If you think this is in error, please contact the
+					ATC Training Department.
+				</p>
 			{/if}
 		</Card.Content>
 		<Card.Footer class="flex flex-col gap-2">

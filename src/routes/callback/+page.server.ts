@@ -10,7 +10,6 @@ import { facilityRole, user } from '$lib/server/db/schema';
 import { createSession } from '$lib/auth';
 import { redirect } from '@sveltejs/kit';
 import { facilities } from '$lib/facilities';
-import { and, eq } from 'drizzle-orm';
 import { ROLE_STUDENT } from '$lib/authShared';
 
 export const load: PageServerLoad = async ({ fetch, url, cookies }) => {
@@ -89,22 +88,28 @@ export const load: PageServerLoad = async ({ fetch, url, cookies }) => {
 		const division_id = user_data.data.vatsim.division.id;
 		if (division_id === 'MENA') {
 			// create/update a divisional assignment
-			await db.insert(facilityRole).values({
-				userId: user_data.data.cid,
-				facilityId: 'division',
-				role: ROLE_STUDENT
-			}).onConflictDoNothing();
+			await db
+				.insert(facilityRole)
+				.values({
+					userId: user_data.data.cid,
+					facilityId: 'division',
+					role: ROLE_STUDENT
+				})
+				.onConflictDoNothing();
 		}
 
 		if (user_data.data.vatsim.subdivision && user_data.data.vatsim.subdivision.id) {
 			const subdivision_id = user_data.data.vatsim.subdivision.id;
 			// create/update subdivisional assignment
 			if (Object.keys(facilities).includes(subdivision_id)) {
-				await db.insert(facilityRole).values({
-					userId: user_data.data.cid,
-					facilityId: subdivision_id,
-					role: ROLE_STUDENT
-				}).onConflictDoNothing();
+				await db
+					.insert(facilityRole)
+					.values({
+						userId: user_data.data.cid,
+						facilityId: subdivision_id,
+						role: ROLE_STUDENT
+					})
+					.onConflictDoNothing();
 			}
 		}
 	}

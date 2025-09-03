@@ -7,11 +7,6 @@
 	import { goto } from '$app/navigation';
 	import { page } from '$app/state';
 	import { ticketSchema } from '../ticketSchema';
-	import * as Select from '$lib/components/ui/select';
-	import { Button } from '$lib/components/ui/button';
-	import CheckIcon from '@lucide/svelte/icons/check';
-	import TrashIcon from '@lucide/svelte/icons/trash';
-	import { Toggle } from '$lib/components/ui/toggle';
 
 	let { data }: PageProps = $props();
 

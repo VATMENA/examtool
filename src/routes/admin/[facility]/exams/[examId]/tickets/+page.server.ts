@@ -4,7 +4,7 @@ import type { PageServerLoad } from './$types';
 import { db } from '$lib/server/db';
 import { redirect } from '@sveltejs/kit';
 import { and, eq, gt } from 'drizzle-orm';
-import { auditLogEntry, exam, examTicket } from '$lib/server/db/schema';
+import { exam, examTicket } from '$lib/server/db/schema';
 
 export const load: PageServerLoad = async ({ cookies, params }) => {
 	const session = await requireRole(requireAuth(cookies), ROLE_ADMIN);
@@ -13,7 +13,7 @@ export const load: PageServerLoad = async ({ cookies, params }) => {
 	}
 
 	const thisExam = await db.query.exam.findFirst({
-		where: eq(exam.id, Number.parseInt(params.examId)),
+		where: eq(exam.id, Number.parseInt(params.examId))
 	});
 
 	if (!thisExam) {

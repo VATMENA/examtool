@@ -18,7 +18,7 @@ export const actions: Actions = {
 		const session = await requireRole(requireAuth(event.cookies), ROLE_STUDENT, true);
 
 		const form = await event.request.formData();
-		const ticket = form.get("ticket");
+		const ticket = form.get('ticket');
 
 		if (!ticket) {
 			return null;
@@ -51,6 +51,6 @@ export const actions: Actions = {
 			examData,
 			instructorNameFirst: instructor.name_first,
 			instructorNameLast: instructor.name_last
-		}
+		};
 	}
-}
+};
