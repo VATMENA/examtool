@@ -14,3 +14,6 @@
 <Button variant="outline" href="/admin/{page.params.facility}/exams/{id}/questions"
 	>Edit Exam Questions</Button
 >
+<Button variant="outline" href="/admin/{page.params.facility}/exams/{id}/tickets">
+	Manage Tickets
+</Button>
