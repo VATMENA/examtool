@@ -10,11 +10,16 @@ export const questionSchema = z.discriminatedUnion('type', [
 				isCorrect: z.boolean()
 			})
 		)
+	}),
+	z.object({
+		type: z.literal('free-response'),
+		question: z.string()
 	})
 ]);
 
 export type QuestionSchema = typeof questionSchema;
 
 export const questionTypes = {
-	'multiple-choice': 'Multiple Choice'
+	'multiple-choice': 'Multiple Choice',
+	'free-response': 'Free Response'
 };

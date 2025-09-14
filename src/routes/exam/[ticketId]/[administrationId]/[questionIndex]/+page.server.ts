@@ -10,7 +10,7 @@ import {
 	examTicket
 } from '$lib/server/db/schema';
 import { db } from '$lib/server/db';
-import type { MultipleChoiceQuestion, Question } from '$lib/question';
+import type { FreeResponseQuestion, MultipleChoiceQuestion, Question } from '$lib/question';
 
 export const load: PageServerLoad = async ({ cookies, params, url }) => {
 	const session = await requireRole(requireAuth(cookies), ROLE_STUDENT, true);
@@ -83,6 +83,9 @@ export const load: PageServerLoad = async ({ cookies, params, url }) => {
 		} else {
 			strippedQuestionData = q;
 		}
+	} else if (currentQuestionData.type === 'free-response') {
+		const q: FreeResponseQuestion = currentQuestionData as FreeResponseQuestion;
+		strippedQuestionData = q;
 	}
 
 	// check if there is an answer for this question
@@ -179,6 +182,14 @@ export const actions: Actions = {
 			if (q.choices[userQuestionAnswer].isCorrect) {
 				pointsGiven = 4;
 			}
+			pointsPossible = 4;
+		} else if (currentQuestionData.type === "free-response") {
+			console.log(answerData);
+			userQuestionAnswer = answerData.freeResponse;
+
+			isGraded = false;
+			requiresManualGrading = true;
+			pointsGiven = 0;
 			pointsPossible = 4;
 		}
 

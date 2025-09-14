@@ -7,7 +7,7 @@ import { zod } from 'sveltekit-superforms/adapters';
 import { db } from '$lib/server/db';
 import { auditLogEntry, exam, examAvailableQuestion } from '$lib/server/db/schema';
 import { questionSchema } from '../questionSchema';
-import type { MultipleChoiceQuestion, Question } from '$lib/question';
+import type { FreeResponseQuestion, MultipleChoiceQuestion, Question } from '$lib/question';
 import { eq } from 'drizzle-orm';
 
 export const load: PageServerLoad = async ({ cookies, params }) => {
@@ -33,6 +33,8 @@ export const load: PageServerLoad = async ({ cookies, params }) => {
 
 	if (questionData.type === 'multiple-choice') {
 		prefilledData = questionData as MultipleChoiceQuestion;
+	} else if (questionData.type === 'free-response') {
+		prefilledData = questionData as FreeResponseQuestion;
 	}
 
 	return {
@@ -64,6 +66,14 @@ export const actions: Actions = {
 				choices: form.data.choices
 			};
 			question = mcq as Question;
+		} else if (form.data.type === 'free-response') {
+			const frq: FreeResponseQuestion = {
+				type: 'free-response',
+				version: 'v1',
+				canBeAutomaticallyGraded: false,
+				question: form.data.question
+			};
+			question = frq as Question;
 		} else {
 			return fail(400, { form });
 		}

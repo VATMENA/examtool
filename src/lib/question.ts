@@ -22,3 +22,13 @@ export interface MultipleChoiceAnswerOption {
 export interface AnsweredMultipleChoiceQuestion extends AnsweredQuestion {
 	selectedOption: number;
 }
+
+// Free-response
+export interface FreeResponseQuestion extends Question {
+	type: 'free-response';
+	question: string;
+	canBeAutomaticallyGraded: false;
+}
+export interface AnsweredFreeResponseQuestion extends AnsweredQuestion {
+	answer: string;
+}

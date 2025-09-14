@@ -12,12 +12,14 @@
 	import { SvelteURLSearchParams } from 'svelte/reactivity';
 	import { browser } from '$app/environment';
 	import { Badge } from '$lib/components/ui/badge';
+	import { Input } from '$lib/components/ui/input';
 
 	const { data }: PageProps = $props();
 
 	async function saveCurrentQuestion() {
 		const answerData = {
-			multipleChoice: mcqEnteredAnswer
+			multipleChoice: mcqEnteredAnswer,
+			freeResponse: frqEnteredAnswer
 		};
 		const answerDataString = JSON.stringify(answerData);
 
@@ -85,9 +87,19 @@
 			return null;
 		}
 	}
+	function determineFrqState(typ: string, maybeAnswer: never): string | null {
+		if (typ === 'free-response' && maybeAnswer !== undefined && maybeAnswer !== null) {
+			return maybeAnswer;
+		} else {
+			return null;
+		}
+	}
 
 	let mcqEnteredAnswer: string | null = $derived(
 		determineMcqState(data.strippedQuestionData.type, data.maybeAnswer)
+	);
+	let frqEnteredAnswer: string | null = $derived(
+		determineFrqState(data.strippedQuestionData.type, data.maybeAnswer)
 	);
 </script>
 
@@ -129,6 +141,9 @@
 							</div>
 						{/each}
 					</RadioGroup.Root>
+				{:else if data.strippedQuestionData.type === 'free-response'}
+					<h2 class="text-xl font-semibold">{data.strippedQuestionData.question}</h2>
+					<Input disabled={data.isReviewMode} bind:value={frqEnteredAnswer} onchange={saveCurrentQuestion} />
 				{/if}
 			{/key}
 		</Card.Content>

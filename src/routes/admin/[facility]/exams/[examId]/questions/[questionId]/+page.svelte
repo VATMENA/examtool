@@ -112,6 +112,16 @@
 				</Button>
 			</div>
 		{/each}
+	{:else if $formData.type === 'free-response'}
+		<Form.Field {form} name="question">
+			<Form.Control>
+				{#snippet children({ props })}
+					<Form.Label>Question Text</Form.Label>
+					<Input {...props} bind:value={$formData.question} />
+				{/snippet}
+			</Form.Control>
+			<Form.FieldErrors />
+		</Form.Field>
 	{/if}
 
 	<Form.Button>Update</Form.Button>
