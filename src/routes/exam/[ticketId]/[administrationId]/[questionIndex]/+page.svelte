@@ -144,6 +144,9 @@
 				{:else if data.strippedQuestionData.type === 'free-response'}
 					<h2 class="text-xl font-semibold">{data.strippedQuestionData.question}</h2>
 					<Input disabled={data.isReviewMode} bind:value={frqEnteredAnswer} onchange={saveCurrentQuestion} />
+					{#if data.reviewAnswer && data.isReviewMode}
+						<p>Scored {data.reviewAnswer.pointsGiven} of {data.reviewAnswer.pointsPossible} points</p>
+					{/if}
 				{/if}
 			{/key}
 		</Card.Content>

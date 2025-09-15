@@ -27,6 +27,13 @@
 							{/snippet}
 						</Sidebar.MenuButton>
 					</Sidebar.MenuItem>
+					<Sidebar.MenuItem>
+						<Sidebar.MenuButton isActive={page.url.pathname.startsWith(`/admin/${cfId}/ungraded`)}>
+							{#snippet child({ props })}
+								<a href="/admin/{cfId}/ungraded" {...props}>Ungraded Exams</a>
+							{/snippet}
+						</Sidebar.MenuButton>
+					</Sidebar.MenuItem>
 				</Sidebar.Menu>
 			</Sidebar.GroupContent>
 		</Sidebar.Group>

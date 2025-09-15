@@ -109,6 +109,7 @@ export const load: PageServerLoad = async ({ cookies, params, url }) => {
 		administrationId: thisExamAdministration.id,
 
 		maybeAnswer,
+		reviewAnswer: isReviewMode ? maybeAnswerObj : null,
 		isReviewMode,
 		studentId: thisExamAdministration.userId
 	};
