@@ -9,7 +9,7 @@ export const load: PageServerLoad = async ({ cookies }) => {
 	const session = await requireRole(requireAuth(cookies), ROLE_STUDENT, true);
 
 	// Find all public exams the user has not taken in facilities where the user is a student
-	const allExams = await db.select().from(exam);
+	const allExams = await db.select().from(exam).where(eq(exam.isRestricted, false));
 
 	const userAvailableExams = [];
 	for (const possibleExam of allExams) {
