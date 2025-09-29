@@ -1,5 +1,5 @@
 import type { PageServerLoad } from './$types';
-import { requireAuth, requireRole } from '$lib/auth';
+import { currentTimestamp, requireAuth, requireRole } from '$lib/auth';
 import { ROLE_STUDENT } from '$lib/authShared';
 import { db } from '$lib/server/db';
 import { exam, examAdministration } from '$lib/server/db/schema';
@@ -26,9 +26,36 @@ export const load: PageServerLoad = async ({ cookies }) => {
 				)
 			);
 
-		if (examAttemptsHere.length !== 0) continue;
+		let takeAuthorized = true;
+		console.log(examAttemptsHere.length);
+		if (examAttemptsHere.length > 2) continue; // Only allow up to 3 attempts
+		// If the user has passed, do not allow retakes
+		for (const attempt of examAttemptsHere) {
+			if (attempt.hasPendingGrade) {
+				console.log("not authorized: pending grade");
+				// They need to wait for their previous score first
+				takeAuthorized = false;
+				break;
+			}
+			if (attempt.points / attempt.pointsAvailable >= 0.8) {
+				console.log("not authorized: passed already");
+				// They've already passed this exam
+				takeAuthorized = false;
+				break;
+			}
+			// This was a failed attempt; meter a retake
+			// delay 24h after first failure, 72h after second
+			const delay = examAttemptsHere.length == 1 ? 86400 : 86400 * 3;
+			if (currentTimestamp() - attempt.startedAt < delay) {
+				console.log(currentTimestamp(), attempt.startedAt, currentTimestamp() - attempt.startedAt, delay);
+				takeAuthorized = false;
+				break; // need to wait for delay
+			}
+		}
 
-		userAvailableExams.push(possibleExam);
+		if (takeAuthorized) {
+			userAvailableExams.push(possibleExam);
+		}
 	}
 
 	return {

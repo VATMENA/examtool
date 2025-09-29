@@ -47,8 +47,14 @@
 					<CircleXIcon />
 					<Alert.Title>Exam failed</Alert.Title>
 					<Alert.Description
-						>Exam failed with a score of {(data.score * 100).toFixed(2)}% (80% needed to pass). An
-						instructor may authorize a retake.</Alert.Description
+						>Exam failed with a score of {(data.score * 100).toFixed(2)}% (80% needed to pass).
+						{#if data.exam.isRestricted}
+							An instructor may authorize a retake.
+						{:else}
+							You may retake the exam after 24/72 hours depending on your number of previous attempts.
+							Study and try again soon!
+						{/if}
+					</Alert.Description
 					>
 				</Alert.Root>
 			{/if}
